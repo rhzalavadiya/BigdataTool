@@ -1,0 +1,218 @@
+count()
+slected colum (projection)
+oreder by - sort
+update
+inset
+delete
+comaprison 
+indexing 
+update multi query
+top two record
+bottom two record
+3rd and 4th (skip)
+not apply simple queris
+********************************************************
+> db.createCollection("mycol",{capped:true,size:1000,max:3}) cereate collection using capped
+{ "ok" : 1 }
+********************************************
+> db.mycol.insertMany([{_id:1,Name:"Ravi"},{_id:2,Name:"Ramesh"},{_id:3,Name:"Sohan"}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+> db.mycol.find()
+{ "_id" : 1, "Name" : "Ravi" }
+{ "_id" : 2, "Name" : "Ramesh" }
+{ "_id" : 3, "Name" : "Sohan" }
+**************************************************
+> db.createCollection("emp",{capped:true,size:1000,max:5})
+{ "ok" : 1 }
+> db.emp.insertMany([{Name:"Ravi",salary:10000},{Name:"Ramesh",salary:20000},{Name:"Sohan",salary:30000},{Name:"ABC",salary:40000},{Name:"EGF",salary:50000}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6638aeea2f849eec6e44e281"),
+                ObjectId("6638aeea2f849eec6e44e282"),
+                ObjectId("6638aeea2f849eec6e44e283"),
+                ObjectId("6638aeea2f849eec6e44e284"),
+                ObjectId("6638aeea2f849eec6e44e285")
+        ]
+}
+> db.emp.find().limit(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e282"), "Name" : "Ramesh", "salary" : 20000 }
+*******************************************************************
+> db.emp.find().skip(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e283"), "Name" : "Sohan", "salary" : 30000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e284"), "Name" : "ABC", "salary" : 40000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e285"), "Name" : "EGF", "salary" : 50000 }
+*********************************
+> db.emp.find().limit(2).skip(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e283"), "Name" : "Sohan", "salary" : 30000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e284"), "Name" : "ABC", "salary" : 40000 }
+***********************************************
+> db.emp.find().skip(2).limit(-2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e283"), "Name" : "Sohan", "salary" : 30000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e284"), "Name" : "ABC", "salary" : 40000 }
+*******************************************************************
+> db.emp.find().limit(-2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e282"), "Name" : "Ramesh", "salary" : 20000 }
+>   
+****************************************************************
+> db.emp.find().sort({salary:-1}).limit(1)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e285"), "Name" : "EGF", "salary" : 50000 }
+*************************************************************
+> db.emp.find().sort({salary:1}).limit(1)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+***************************************************************************************
+> db.emp.find().sort({salary:-1}).limit(1).skip(1)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e284"), "Name" : "ABC", "salary" : 40000 }
+******************************************************************
+> db.emp.find().sort({salary:1}).limit(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e282"), "Name" : "Ramesh", "salary" : 20000 }
+**************************************************
+> db.emp.find().sort({salary:1}).limit(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e282"), "Name" : "Ramesh", "salary" : 20000 }
+*********************************************
+> db.emp.find({dept:10}).sort({salary:-1}).limit(1)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e285"), "Name" : "EGF", "salary" : 50000 }
+*************************************************************
+> db.emp.find({dept:10}).sort({salary:1}).limit(1)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+***************************************************************************************
+> db.emp.find({dept:10}).sort({salary:-1}).limit(1).skip(1)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e284"), "Name" : "ABC", "salary" : 40000 }
+******************************************************************
+> db.emp.find({dept:10}).sort({salary:1}).limit(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e282"), "Name" : "Ramesh", "salary" : 20000 }
+**************************************************
+> db.emp.find({dept:10}).sort({salary:1}).limit(2)
+{ "_id" : ObjectId("6638aeea2f849eec6e44e281"), "Name" : "Ravi", "salary" : 10000 }
+{ "_id" : ObjectId("6638aeea2f849eec6e44e282"), "Name" : "Ramesh", "salary" : 20000 }
+************************
+> db.mycol.getIndexes()
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "blog.mycol"
+        }
+]
+*********************************************
+> db.emp.ensureIndex({name:1})
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "ok" : 1
+}
+> db.emp.createIndex({salary:1})
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 2,
+        "numIndexesAfter" : 3,
+        "ok" : 1
+}
+**************************************************************
+> db.faculty.getIndexes()
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "demo.faculty"
+        }
+]
+**********************************************
+> db.faculty.ensureIndex({Name:1})
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "ok" : 1
+}
+*****************************************************************
+> db.faculty.createIndex({Dept:1})
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 2,
+        "numIndexesAfter" : 3,
+        "ok" : 1
+}
+*************************************** 
+> db.faculty.find({Name:'John'}).hint({Name:1})
+{ "_id" : 4, "Name" : "John", "Dept" : "MCA", "bonus" : 1000, "status" : "B" }
+*****************************************************************************************
+> db.faculty.find({Name:'John'}).hint({Name:1}).explain()
+{
+        "queryPlanner" : {
+                "plannerVersion" : 1,
+                "namespace" : "demo.faculty",
+                "indexFilterSet" : false,
+                "parsedQuery" : {
+                        "Name" : {
+                                "$eq" : "John"
+                        }
+                },
+                "winningPlan" : {
+                        "stage" : "FETCH",
+                        "inputStage" : {
+                                "stage" : "IXSCAN",
+                                "keyPattern" : {
+                                        "Name" : 1
+                                },
+                                "indexName" : "Name_1",
+                                "isMultiKey" : false,
+                                "multiKeyPaths" : {
+                                        "Name" : [ ]
+                                },
+                                "isUnique" : false,
+                                "isSparse" : false,
+                                "isPartial" : false,
+                                "indexVersion" : 2,
+                                "direction" : "forward",
+                                "indexBounds" : {
+                                        "Name" : [
+                                                "[\"John\", \"John\"]"
+                                        ]
+                                }
+                        }
+                },
+                "rejectedPlans" : [ ]
+        },
+        "serverInfo" : {
+                "host" : "MCALAB-103-38",
+                "port" : 27017,
+                "version" : "4.0.6",
+                "gitVersion" : "caa42a1f75a56c7643d0b68d3880444375ec42e3"
+        },
+        "ok" : 1
+}
+*********************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

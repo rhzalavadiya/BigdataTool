@@ -1,0 +1,342 @@
+Create database EMP and Make Collection With name "EMPL" and Follow Queries
+> use EMP
+switched to db EMP
+***************************************************
+Insert Records Into EMPL Collection
+{no:1,name:"ST",salary:2000,role:"OB"},
+{no:2,name:"MSD",salary:1500,role:"WK"},
+{no:3,name:"YS",salary:1000,role:"ALR"},
+{no:4,name:"RD",salary:1000,role:"MOB"},
+{no:5,name:"RS",salary:500,role:"OB"},
+{no:6,name:"BK",salary:500,role:"MOB"},
+{no:7,name:"VK",salary:300,role:"BW"},
+{no:8,name:"JB",salary:400,role:"BW"},
+{no:9,name:"HP",salary:400,role:"ALR"},
+{no:10,name:"VS",salary:300,role:"OB"}])
+> db.createCollection('EMPL')
+{ "ok" : 1 }
+> db.EMPL.insertMany([{no:1,name:"ST",salary:2000,role:"OB"},
+... {no:2,name:"MSD",salary:1500,role:"WK"},
+... {no:3,name:"YS",salary:1000,role:"ALR"},
+... {no:4,name:"RD",salary:1000,role:"MOB"},
+... {no:5,name:"RS",salary:500,role:"OB"},
+... {no:6,name:"BK",salary:500,role:"MOB"},
+... {no:7,name:"VK",salary:300,role:"BW"},
+... {no:8,name:"JB",salary:400,role:"BW"},
+... {no:9,name:"HP",salary:400,role:"ALR"},
+... {no:10,name:"VS",salary:300,role:"OB"}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("663342a90d89fbfde299a88d"),
+                ObjectId("663342a90d89fbfde299a88e"),
+                ObjectId("663342a90d89fbfde299a88f"),
+                ObjectId("663342a90d89fbfde299a890"),
+                ObjectId("663342a90d89fbfde299a891"),
+                ObjectId("663342a90d89fbfde299a892"),
+                ObjectId("663342a90d89fbfde299a893"),
+                ObjectId("663342a90d89fbfde299a894"),
+                ObjectId("663342a90d89fbfde299a895"),
+                ObjectId("663342a90d89fbfde299a896")
+        ]
+}
+*****************************************************************
+1. Display data in tabular format.
+> db.EMPL.find().pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 2000,
+        "role" : "OB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88e"),
+        "no" : 2,
+        "name" : "MSD",
+        "salary" : 1500,
+        "role" : "WK"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88f"),
+        "no" : 3,
+        "name" : "YS",
+        "salary" : 1000,
+        "role" : "ALR"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a890"),
+        "no" : 4,
+        "name" : "RD",
+        "salary" : 1000,
+        "role" : "MOB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a891"),
+        "no" : 5,
+        "name" : "RS",
+        "salary" : 500,
+        "role" : "OB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a892"),
+        "no" : 6,
+        "name" : "BK",
+        "salary" : 500,
+        "role" : "MOB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a893"),
+        "no" : 7,
+        "name" : "VK",
+        "salary" : 300,
+        "role" : "BW"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a894"),
+        "no" : 8,
+        "name" : "JB",
+        "salary" : 400,
+        "role" : "BW"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a895"),
+        "no" : 9,
+        "name" : "HP",
+        "salary" : 400,
+        "role" : "ALR"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a896"),
+        "no" : 10,
+        "name" : "VS",
+        "salary" : 300,
+        "role" : "OB"
+}
+**********************************************************
+2. Update salary of employee where name is "ST" also increase salary by +8000.
+>db.EMPL.updateOne({"name": "ST"},{$inc: {"salary": 8000}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.EMPL.find({"name":/^S/}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 10000,
+        "role" : "OB"
+}
+*****************************************************************
+3. Update salary of all employee by giving an increment of +4000 each employee.
+> db.EMPL.updateMany({},{$inc: {"salary": 4000}})
+{ "acknowledged" : true, "matchedCount" : 10, "modifiedCount" : 10 }
+***********************************************
+4. Update role of employee whose name is "MSD" as "C and WK"
+> db.EMPL.updateOne({"name": "MSD"},{$set: {"role": "C and WK"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+******************************************************
+5. Add a new field remark to document with name "RS" set remark as WC
+***************************************************
+6. Add a new field as number “11”, name “AK”, Salary “10000”, role “coach”
+**********************************************
+without using insert statement, but for doing so you should have a record added number 11.
+7. Remove added new field(number “11”).
+*****************************************************
+8. Update the field "RD" by multiplying with salary by 2
+***********************************************************
+9. Find document from the empl collection where name begins with ‘S’
+> db.EMPL.find({"name":/^S/}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 2000,
+        "role" : "OB"
+}
+******************************************************
+10. Find document from the empl collection where name begins with ‘R’
+> db.EMPL.find({"name":/^R/}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a890"),
+        "no" : 4,
+        "name" : "RD",
+        "salary" : 1000,
+        "role" : "MOB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a891"),
+        "no" : 5,
+        "name" : "RS",
+        "salary" : 500,
+        "role" : "OB"
+}
+****************************************************
+11. Find document from the empl collection where name ends with ‘K’
+> db.EMPL.find({"name":/K$/}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a892"),
+        "no" : 6,
+        "name" : "BK",
+        "salary" : 500,
+        "role" : "MOB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a893"),
+        "no" : 7,
+        "name" : "VK",
+        "salary" : 300,
+        "role" : "BW"
+}
+*****************************************************************
+12. Find document from the empl collection where name ends with ‘D’
+> db.EMPL.find({"name":/D$/}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88e"),
+        "no" : 2,
+        "name" : "MSD",
+        "salary" : 1500,
+        "role" : "WK"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a890"),
+        "no" : 4,
+        "name" : "RD",
+        "salary" : 1000,
+ }
+*********************************************************
+13. Find document from the empl collection where name has S in any position
+> db.EMPL.find({"name":/S/}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 2000,
+        "role" : "OB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88e"),
+        "no" : 2,
+        "name" : "MSD",
+        "salary" : 1500,
+        "role" : "WK"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88f"),
+        "no" : 3,
+        "name" : "YS",
+        "salary" : 1000,
+        "role" : "ALR"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a891"),
+        "no" : 5,
+        "name" : "RS",
+        "salary" : 500,
+        "role" : "OB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a896"),
+        "no" : 10,
+        "name" : "VS",
+        "salary" : 300,
+        "role" : "OB"
+}
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+(Note: Use Case sensitive allow For that write in Option: "i")
+1. Find document from the empl collection where name begins with ‘S’
+> db.EMPL.find({"name":{$in :[/^S/,/^s/]}}).pretty();
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 2000,
+        "role" : "OB"
+}
+***************************************************
+2. Find document from the empl collection where name begins with ‘S’
+> db.EMPL.find({"name":{$in :[/^S/,/^s/]}}).pretty();
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 2000,
+        "role" : "OB"
+}
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+Use of $in and $nin (in and notin)
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+(Note: There will not use {} braces in that $in and $nin)
+1. Display documents where in empl collection field have OB,MOB
+> db.EMPL.find({"role": {$in: ["OB", "MOB"]}}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88d"),
+        "no" : 1,
+        "name" : "ST",
+        "salary" : 2000,
+        "role" : "OB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a890"),
+        "no" : 4,
+        "name" : "RD",
+        "salary" : 1000,
+        "role" : "MOB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a891"),
+        "no" : 5,
+        "name" : "RS",
+        "salary" : 500,
+        "role" : "OB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a892"),
+        "no" : 6,
+        "name" : "BK",
+        "salary" : 500,
+        "role" : "MOB"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a896"),
+        "no" : 10,
+        "name" : "VS",
+        "salary" : 300,
+        "role" : "OB"
+}
+*************************************************
+2. Display documents where in empl collection field not have OB,MOB
+> db.EMPL.find({"role": {$nin: ["OB", "MOB"]}}).pretty()
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88e"),
+        "no" : 2,
+        "name" : "MSD",
+        "salary" : 1500,
+        "role" : "WK"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a88f"),
+        "no" : 3,
+        "name" : "YS",
+        "salary" : 1000,
+        "role" : "ALR"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a893"),
+        "no" : 7,
+        "name" : "VK",
+        "salary" : 300,
+        "role" : "BW"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a894"),
+        "no" : 8,
+        "name" : "JB",
+        "salary" : 400,
+        "role" : "BW"
+}
+{
+        "_id" : ObjectId("663342a90d89fbfde299a895"),
+        "no" : 9,
+        "name" : "HP",
+        "salary" : 400,
+        "role" : "ALR"
+}

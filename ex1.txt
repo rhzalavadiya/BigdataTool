@@ -1,0 +1,93 @@
+> use Inventory
+switched to db Inventory
+> db.createCollection('Product')
+{ "ok" : 1 }
+> db.Product.insertMany([{"Id":1,"Name":"Computer","Brand":"HP","Price":12000},
+... {"Id":2,"Name":"TV","Brand":"Toshiba","Price":21000},
+... {"Id":3,"Name":"Mixer","Brand":"LG","Price":4500},
+... {"Id":4,"Name":"Juicer","Brand":"Bajaj","Price":7500},
+... {"Id":5,"Name":"Blender","Brand":"Croma","Price":3200},
+... {"Id":6,"Name":"Fm Radio","Brand":"carvan","Price":2150},
+... {"Id":7,"Name":"Washind Machine","Brand":"LG","Price":9800}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6630c65c24a47da04b522caa"),
+                ObjectId("6630c65c24a47da04b522cab"),
+                ObjectId("6630c65c24a47da04b522cac"),
+                ObjectId("6630c65c24a47da04b522cad"),
+                ObjectId("6630c65c24a47da04b522cae"),
+                ObjectId("6630c65c24a47da04b522caf"),
+                ObjectId("6630c65c24a47da04b522cb0")
+        ]
+}
+> db.Product.find()
+{ "_id" : ObjectId("6630c65c24a47da04b522caa"), "Id" : 1, "Name" : "Computer", "Brand" : "HP", "Price" : 12000 }
+{ "_id" : ObjectId("6630c65c24a47da04b522cab"), "Id" : 2, "Name" : "TV", "Brand" : "Toshiba", "Price" : 21000 }
+{ "_id" : ObjectId("6630c65c24a47da04b522cac"), "Id" : 3, "Name" : "Mixer", "Brand" : "LG", "Price" : 4500 }
+{ "_id" : ObjectId("6630c65c24a47da04b522cad"), "Id" : 4, "Name" : "Juicer", "Brand" : "Bajaj", "Price" : 7500 }
+{ "_id" : ObjectId("6630c65c24a47da04b522cae"), "Id" : 5, "Name" : "Blender", "Brand" : "Croma", "Price" : 3200 }
+{ "_id" : ObjectId("6630c65c24a47da04b522caf"), "Id" : 6, "Name" : "Fm Radio", "Brand" : "carvan", "Price" : 2150 }
+{ "_id" : ObjectId("6630c65c24a47da04b522cb0"), "Id" : 7, "Name" : "Washind Machine", "Brand" : "LG", "Price" : 9800 }
+> db.Product.findOne()
+{
+        "_id" : ObjectId("6630c65c24a47da04b522caa"),
+        "Id" : 1,
+        "Name" : "Computer",
+        "Brand" : "HP",
+        "Price" : 12000
+}
+> db.Product.find().pretty()
+{
+        "_id" : ObjectId("6630c65c24a47da04b522caa"),
+        "Id" : 1,
+        "Name" : "Computer",
+        "Brand" : "HP",
+        "Price" : 12000
+}
+{
+        "_id" : ObjectId("6630c65c24a47da04b522cab"),
+        "Id" : 2,
+        "Name" : "TV",
+        "Brand" : "Toshiba",
+        "Price" : 21000
+}
+{
+        "_id" : ObjectId("6630c65c24a47da04b522cac"),
+        "Id" : 3,
+        "Name" : "Mixer",
+        "Brand" : "LG",
+        "Price" : 4500
+}
+{
+        "_id" : ObjectId("6630c65c24a47da04b522cad"),
+        "Id" : 4,
+        "Name" : "Juicer",
+        "Brand" : "Bajaj",
+        "Price" : 7500
+}
+{
+        "_id" : ObjectId("6630c65c24a47da04b522cae"),
+        "Id" : 5,
+        "Name" : "Blender",
+        "Brand" : "Croma",
+        "Price" : 3200
+}
+{
+        "_id" : ObjectId("6630c65c24a47da04b522caf"),
+        "Id" : 6,
+        "Name" : "Fm Radio",
+        "Brand" : "carvan",
+        "Price" : 2150
+}
+{
+        "_id" : ObjectId("6630c65c24a47da04b522cb0"),
+        "Id" : 7,
+        "Name" : "Washind Machine",
+        "Brand" : "LG",
+        "Price" : 9800
+}
+> db.Product.drop()
+true
+> db.dropDatabase()
+{ "dropped" : "Inventory", "ok" : 1 }

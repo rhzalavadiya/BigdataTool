@@ -1,0 +1,299 @@
+db.result.insertMany([
+{_id:1,sec:'A',Marks:80},
+{_id:2,sec:'A',Marks:90},
+{_id:3,sec:'B',Marks:99},
+{_id:4,sec:'B',Marks:95},
+{_id:5,sec:'C',Marks:90}
+])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5 ] }
+**********************************************************
+> var map=function(){emit(this.sec,this.Marks)};
+> var reduce=function(sec,Marks){return Array.sum(Marks);};
+> db.result.mapReduce(map,reduce,{out:"resultmp"});
+{
+        "result" : "resultmp",
+        "timeMillis" : 49,
+        "counts" : {
+                "input" : 5,
+                "emit" : 5,
+                "reduce" : 2,
+                "output" : 3
+        },
+        "ok" : 1
+}
+> db.resultmp.find()
+{ "_id" : "A", "value" : 170 }
+{ "_id" : "B", "value" : 194 }
+{ "_id" : "C", "value" : 90 }
+***************************************************************************
+> var map=function(){emit(this.sec,this.Marks)};
+> var reduce=function(sec,Marks){return Array.avg(Marks);};
+> db.result.mapReduce(map,reduce,{out:"resultmp"});
+{
+        "result" : "resultmp",
+        "timeMillis" : 36,
+        "counts" : {
+                "input" : 5,
+                "emit" : 5,
+                "reduce" : 2,
+                "output" : 3
+        },
+        "ok" : 1
+}
+> db.resultmp.find()
+{ "_id" : "A", "value" : 85 }
+{ "_id" : "B", "value" : 97 }
+{ "_id" : "C", "value" : 90 }
+****************************************************************
+> db.resultmp.find({value:{$gt:90}})
+{ "_id" : "B", "value" : 97 }
+*************************************************
+*************************************************************
+db.stud.insertMany([
+{_id:1,name:'Midhu',subject:'science',marks:68},
+{_id:2,name:'Midhu',subject:'maths',marks:98},
+{_id:3,name:'Midhu',subject:'sport',marks:77},
+{_id:4,name:'Akhil',subject:'science',marks:67},
+{_id:5,name:'Akhil',subject:'maths',marks:87},
+{_id:6,name:'Akhil',subject:'sport',marks:89},
+{_id:7,name:'Anish',subject:'science',marks:67},
+{_id:8,name:'Anish',subject:'maths',marks:78},
+{_id:9,name:'Anish',subject:'sport',marks:90}
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+        ]
+}
+**********************************************
+> var map=function(){emit(this.subject,this.marks)};
+> var reduce=function(subject,marks){return Array.sum(marks);};
+> db.stud.mapReduce(map,reduce,{out:"studmp"});
+{
+        "result" : "studmp",
+        "timeMillis" : 38,
+        "counts" : {
+                "input" : 9,
+                "emit" : 9,
+                "reduce" : 3,
+                "output" : 3
+        },
+        "ok" : 1
+}
+> db.studmp.find()
+{ "_id" : "maths", "value" : 263 }
+{ "_id" : "science", "value" : 202 }
+{ "_id" : "sport", "value" : 256 }
+*************************************************
+db.cust.insertMany([
+{_id:1,c_id:'abc123',odt:new Date("Oct 04,2012"),status:'A',price:25,item:[{sku:'mmm',qty:5,price:2.5},{sku:'nn',qty:5,price:2.5}]},
+{_id:2,c_id:'abc123',odt:new Date("Oct 04,2012"),status:'A',price:25,item:[{sku:'mmm',qty:5,price:2.5},{sku:'nn',qty:5,price:2.5}]},
+{_id:3,c_id:'abc124',odt:new Date("Oct 04,2012"),status:'A',price:25,item:[{sku:'mmm',qty:5,price:2.5},{sku:'nn',qty:5,price:2.5}]}
+])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+*****************************************************
+> var map=function(){emit(this.c_id,this.price)};
+> var reduce=function(c_id,price){return Array.sum(price);};
+> db.cust.mapReduce(map,reduce,{out:"custmp"});
+{
+        "result" : "custmp",
+        "timeMillis" : 39,
+        "counts" : {
+                "input" : 3,
+                "emit" : 3,
+                "reduce" : 1,
+                "output" : 2
+        },
+        "ok" : 1
+}
+> db.custmp.find()
+{ "_id" : "abc123", "value" : 50 }
+{ "_id" : "abc124", "value" : 25 }
+***************************************************************************
+
+_id,summary 5 ya 4 word
+
+db.wordcount.insertMany([
+{_id:1,summary:"today is great day"},
+{_id:2,summary:"great day for learning"},
+{_id:3,summary:"great day with joy"}
+])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+***************************************************
+var map=function(){
+   var summary=this.summary;
+   if(summary){
+      summary=summary.toLowerCase().split(" ");
+      for(var i=summary.length-1;i>=0;i++){
+          if(summary[i]){
+             emit(summary[i],1);
+          }
+       }
+    }
+};
+var reduce=function(key,values){
+   var count=0;
+   values.forEach(function(v){
+      count+=v;
+   });
+   return count;
+}
+db.wordcount.mapReduce(map,reduce,{out:"wcmp"})
+
+var reduce=function(_id,summary){return Array.sum(summary)}
+*******************************************************************
+*********************ex1*******************************
+db.customer.insertMany([
+{cnm:'rupali',pnm:'pen',qty:7},
+{cnm:'rupali',pnm:'book',qty:10},
+{cnm:'axita',pnm:'pen',qty:16},
+{cnm:'axita',pnm:'book',qty:18},
+{cnm:'drashti',pnm:'pen',qty:12},
+{cnm:'drashti',pnm:'book',qty:20},
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6644854e615f7eec5e8248c8"),
+                ObjectId("6644854e615f7eec5e8248c9"),
+                ObjectId("6644854e615f7eec5e8248ca"),
+                ObjectId("6644854e615f7eec5e8248cb"),
+                ObjectId("6644854e615f7eec5e8248cc"),
+                ObjectId("6644854e615f7eec5e8248cd")
+        ]
+}
+
+var map=function(){emit(this.pnm,this.qty)};
+var reduce=function(pnm,qty){return Array.sum(qty);};
+db.customer.mapReduce(map,reduce,{out:"pmp"});
+
+{
+        "result" : "cmp",
+        "timeMillis" : 131,
+        "counts" : {
+                "input" : 6,
+                "emit" : 6,
+                "reduce" : 3,
+                "output" : 3
+        },
+        "ok" : 1
+}
+> db.cmp.find()
+{ "_id" : "axita", "value" : 34 }
+{ "_id" : "drashti", "value" : 32 }
+{ "_id" : "rupali", "value" : 17 }
+**********************************************
+> var map=function(){emit(this.pnm,this.qty)};
+> var reduce=function(pnm,qty){return Array.sum(qty);};
+> db.customer.mapReduce(map,reduce,{out:"pmp"});
+{
+        "result" : "pmp",
+        "timeMillis" : 41,
+        "counts" : {
+                "input" : 6,
+                "emit" : 6,
+                "reduce" : 2,
+                "output" : 2
+        },
+        "ok" : 1
+}
+> db.pmp.find()
+{ "_id" : "book", "value" : 48 }
+{ "_id" : "pen", "value" : 35 }
+******************************************************************
+
+db.blog.insertMany([
+{_id:1,uid:'u101',post:'python mapreduce',st:'A'},
+{_id:2,uid:'u101',post:'python soket',st:'A'},
+{_id:3,uid:'u102',post:'java script',st:'A'},
+{_id:4,uid:'u102',post:'css&bootstrmp',st:'A'},
+{_id:5,uid:'u101',post:'python ADT',st:'P'}
+])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5 ] }
+var map=function(){emit(this.uid,this.st)};
+var reduce=function(uid,st){return Array.count(st);};
+db.blog.mapReduce(map,reduce,{out:"blogmp"});
+{
+        "result" : "blogmp",
+        "timeMillis" : 37,
+        "counts" : {
+                "input" : 5,
+                "emit" : 5,
+                "reduce" : 2,
+                "output" : 2
+        },
+        "ok" : 1
+}
+> db.blogmp.find()
+{ "_id" : "u101", "value" : "python mapreducepython soketpython ADT" }
+{ "_id" : "u102", "value" : "java scriptcss&bootstrmp" }
+************************************************
+> var map=function(){emit(this.uid,this.st)};
+> var reduce=function(uid,st){var count=0;st.forEach(function(s){if(s=='A'){count+=1}});return count;}
+> db.blog.mapReduce(map,reduce,{out:"blogmp"});
+{
+        "result" : "blogmp",
+        "timeMillis" : 33,
+        "counts" : {
+                "input" : 5,
+                "emit" : 5,
+                "reduce" : 2,
+                "output" : 2
+        },
+        "ok" : 1
+}
+> db.blogmp.find()
+{ "_id" : "u101", "value" : 2 }
+{ "_id" : "u102", "value" : 2 }
+**************************************************
+db.c1.insertMany([
+{c_id:'C123',Accbal:500,Atype:'s'},
+{c_id:'C123',Accbal:900,Atype:'s'},
+{c_id:'C123',Accbal:1500,Atype:'c'},
+{c_id:'C111',Accbal:1200,Atype:'s'},
+{c_id:'C111',Accbal:1000,Atype:'c'},
+{c_id:'C111',Accbal:5000,Atype:'s'},
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("66448be16d7d9834cf64047f"),
+                ObjectId("66448be16d7d9834cf640480"),
+                ObjectId("66448be16d7d9834cf640481"),
+                ObjectId("66448be16d7d9834cf640482"),
+                ObjectId("66448be16d7d9834cf640483"),
+                ObjectId("66448be16d7d9834cf640484")
+        ]
+}
+var map=function(){emit(this.Atype,this.Accbal)};
+var reduce=function(Atype,Accbal){return Array.avg(Accbal);};
+db.c1.mapReduce(map,reduce,{out:"ac"});
+{
+        "result" : "ac",
+        "timeMillis" : 39,
+        "counts" : {
+                "input" : 6,
+                "emit" : 6,
+                "reduce" : 2,
+                "output" : 2
+        },
+        "ok" : 1
+}
+> db.ac.find()
+{ "_id" : "c", "value" : 1250 }
+{ "_id" : "s", "value" : 1900 }
+*********************************
+
+
+
+
+

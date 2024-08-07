@@ -1,0 +1,100 @@
+To start hadoop : -  start-all.cmd
+*************************************
+To Copy a Directory from local system to Hadoop : - hadoop fs -put D:\haddop /
+*************************************************
+To Copy a Directory from Hadoop system to Local : - hadoop fs -get /haddop  D:\
+************************************************************
+To make s sub Folder : -  hadoop fs -mkdir /abc/h2
+*************************************
+to remove directory : - hadoop fs -rmdir /Rupali\
+*************************************************
+list direcory : -  hadoop fs -ls /abc
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+Found 1 items
+drwxr-xr-x   - Administrator supergroup          0 2024-05-16 15:15 /abc/h2
+----------------------------------------------------------
+hadoop fs -ls  -d /abc
+C:\hadoop-2.9.2\bin>hadoop fs -ls  -d /abc
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+drwxr-xr-x   - Administrator supergroup          0 2024-05-16 15:15 /abc
+-------------------------------------------------------
+hadoop fs -ls  -h /abc
+C:\hadoop-2.9.2\bin>hadoop fs -ls  -h /abc
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+Found 1 items
+drwxr-xr-x   - Administrator supergroup          0 2024-05-16 15:15 /abc/h2
+---------------------------------------------------------------------
+hadoop fs -ls  -R /abc
+C:\hadoop-2.9.2\bin>hadoop fs -ls  -R /abc
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+drwxr-xr-x   - Administrator supergroup          0 2024-05-16 15:15 /abc/h2
+--------------------------------------------------------------------
+hadoop fs -ls /abc/h2
+C:\hadoop-2.9.2\bin>hadoop fs -ls /abc/h2
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+******************************************
+to diaplay the contex of the file  from hdfs to standred output divice : hadoop fs -cat /haddop/demo.txt
+
+************************************************
+C:\hadoop-2.9.2\bin>hadoop fs -put -f D:\haddop /
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+------------------------------------------------------------------
+C:\hadoop-2.9.2\bin>hadoop fs -put -l D:\haddop /
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+put: `/haddop/demo.txt': File exists
+------------------------------------------------------------------
+C:\hadoop-2.9.2\bin>hadoop fs -put -p D:\haddop /
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+put: `/haddop/demo.txt': File exists
+**********************************************************
+C:\hadoop-2.9.2\bin>hadoop fs -get /rupali/*.txt  D:\
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+get: `D:/demo.txt': File exists
+***********************************************************
+to copy the file from hadoop to  local system  :  -     hadoop fs -copyToLocal/rupali
+it is similar to the get command except that the desination restrived to local file refernce
+
+C:\hadoop-2.9.2\bin>hadoop fs -copyToLocal /abc d:\rupali
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+*******************************************
+this command is same like put command with expression the the sourse is restricted .
+copy from local  :- hadoop fs -copyFromLocal d:\rupali /rupali
+
+C:\hadoop-2.9.2\bin> hadoop fs -copyFromLocal d:\rupali /rupali
+'C:\Program' is not recognized as an internal or external command,
+operable program or batch file.
+
+**************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,260 @@
+> db.carrent.insertMany([
+... {car_id:'c01',brand:'Toyota',model_no:'Mo1',model:'Carmy',year:2022,color:'black',c_type:'sedan',Capacity:4,Availability:'A',man_fac:'10-may-2022',rent_det:[{r_id:11,c_id:101,c_nm:'Raj shrivastav',rental_dt:ISODate('2024-05-01T00:00:00Z'),return_dt:ISODate('2024-05-01T00:00:00Z'),Totalcost:3000}]},
+... {car_id:'c02',brand:'Honda',model_no:'Mo2',model:'Civik',year:2023,color:'red',c_type:'suv',Capacity:3,Availability:'N',man_fac:'10-apr-2023',rent_det:[{r_id:12,c_id:102,c_nm:'Ram',rental_dt:ISODate('2024-05-11T00:00:00Z'),return_dt:ISODate('2024-05-12T00:00:00Z'),Totalcost:3300}]},
+... {car_id:'c03',brand:'BMW',model_no:'Mo3',model:'x5',year:2023,color:'yellow',c_type:'coupe',Capacity:2,Availability:'A',man_fac:'10-apr-2023',rent_det:[{r_id:13,c_id:103,c_nm:'Rahul',rental_dt:ISODate('2024-04-05T00:00:00Z'),return_dt:ISODate('2024-04-06T00:00:00Z'),Totalcost:3500}]},
+... {car_id:'c04',brand:'Toyota',model_no:'Mo4',model:'Carmy',year:2024,color:'gray',c_type:'sedan',Capacity:7,Availability:'A',man_fac:'10-feb-2024',rent_det:[{r_id:14,c_id:104,c_nm:'Rupali',rental_dt:ISODate('2024-03-22T00:00:00Z'),return_dt:ISODate('2024-03-25T00:00:00Z'),Totalcost:4000}]},
+... {car_id:'c05',brand:'Honda',model_no:'Mo5',model:'Civik',year:2020,color:'red',c_type:'suv',Capacity:9,Availability:'A',man_fac:'2-mar-2020',rent_det:[{r_id:15,c_id:105,c_nm:'Raj shrivastav',rental_dt:ISODate('2024-01-11T00:00:00Z'),return_dt:ISODate('2024-01-12T00:00:00Z'),Totalcost:4500}]},
+... {car_id:'c06',brand:'BMW',model_no:'Mo6',model:'x5',year:2022,color:'yellow',c_type:'coupe',Capacity:2,Availability:'A',man_fac:'15-jun-2022',rent_det:[{r_id:16,c_id:106,c_nm:'Drashti',rental_dt:ISODate('2024-03-04T00:00:00Z'),return_dt:ISODate('2024-03-22T00:00:00Z'),Totalcost:500}]},
+... {car_id:'c07',brand:'Toyota',model_no:'Mo7',model:'Carmy',year:2023,color:'gray',c_type:'sedan',Capacity:3,Availability:'N',man_fac:'22-feb-2023',rent_det:[{r_id:17,c_id:107,c_nm:'jinal',rental_dt:ISODate('2024-01-22T00:00:00Z'),return_dt:ISODate('2024-01-24T00:00:00Z'),Totalcost:6000}]}
+... ])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("664337ce416990b2465f8231"),
+                ObjectId("664337ce416990b2465f8232"),
+                ObjectId("664337ce416990b2465f8233"),
+                ObjectId("664337ce416990b2465f8234"),
+                ObjectId("664337ce416990b2465f8235"),
+                ObjectId("664337ce416990b2465f8236"),
+                ObjectId("664337ce416990b2465f8237")
+        ]
+}
+***********************************************************
+> db.carrent.find({"color":{$in :["red","yellow"]}},{_id:0,brand:1}).pretty()
+{ "brand" : "Honda" }
+{ "brand" : "BMW" }
+{ "brand" : "Honda" }
+{ "brand" : "BMW" }
+******************************************************************
+> db.carrent.find({year:2022},{_id:0}).pretty()
+{
+        "car_id" : "c01",
+        "brand" : "Toyota",
+        "model_no" : "Mo1",
+        "model" : "Carmy",
+        "year" : 2022,
+        "color" : "black",
+        "c_type" : "sedan",
+        "Capacity" : 4,
+        "Availability" : "A",
+        "man_fac" : "10-may-2022",
+        "rent_det" : [
+                {
+                        "r_id" : 11,
+                        "c_id" : 101,
+                        "c_nm" : "Raj shrivastav",
+                        "rental_dt" : ISODate("2024-05-01T00:00:00Z"),
+                        "return_dt" : ISODate("2024-05-01T00:00:00Z"),
+                        "Totalcost" : 3000
+                }
+        ]
+}
+{
+        "car_id" : "c06",
+        "brand" : "BMW",
+        "model_no" : "Mo6",
+        "model" : "x5",
+        "year" : 2022,
+        "color" : "yellow",
+        "c_type" : "coupe",
+        "Capacity" : 2,
+        "Availability" : "A",
+        "man_fac" : "15-jun-2022",
+        "rent_det" : [
+                {
+                        "r_id" : 16,
+                        "c_id" : 106,
+                        "c_nm" : "Drashti",
+                        "rental_dt" : ISODate("2024-03-04T00:00:00Z"),
+                        "return_dt" : ISODate("2024-03-22T00:00:00Z"),
+                        "Totalcost" : 500
+                }
+        ]
+}
+******************************************************************
+> db.carrent.find({'rent_det.c_nm':'Raj shrivastav'},{_id:0}).pretty()
+{
+        "car_id" : "c01",
+        "brand" : "Toyota",
+        "model_no" : "Mo1",
+        "model" : "Carmy",
+        "year" : 2022,
+        "color" : "black",
+        "c_type" : "sedan",
+        "Capacity" : 4,
+        "Availability" : "A",
+        "man_fac" : "10-may-2022",
+        "rent_det" : [
+                {
+                        "r_id" : 11,
+                        "c_id" : 101,
+                        "c_nm" : "Raj shrivastav",
+                        "rental_dt" : ISODate("2024-05-01T00:00:00Z"),
+                        "return_dt" : ISODate("2024-05-01T00:00:00Z"),
+                        "Totalcost" : 3000
+                }
+        ]
+}
+{
+        "car_id" : "c05",
+        "brand" : "Honda",
+        "model_no" : "Mo5",
+        "model" : "Civik",
+        "year" : 2020,
+        "color" : "red",
+        "c_type" : "suv",
+        "Capacity" : 9,
+        "Availability" : "A",
+        "man_fac" : "2-mar-2020",
+        "rent_det" : [
+                {
+                        "r_id" : 15,
+                        "c_id" : 105,
+                        "c_nm" : "Raj shrivastav",
+                        "rental_dt" : ISODate("2024-01-11T00:00:00Z"),
+                        "return_dt" : ISODate("2024-01-12T00:00:00Z"),
+                        "Totalcost" : 4500
+                }
+        ]
+}
+*******************************************
+> db.carrent.find().sort({year:1}).pretty().limit(5)
+{
+        "_id" : ObjectId("664337ce416990b2465f8235"),
+        "car_id" : "c05",
+        "brand" : "Honda",
+        "model_no" : "Mo5",
+        "model" : "Civik",
+        "year" : 2020,
+        "color" : "red",
+        "c_type" : "suv",
+        "Capacity" : 9,
+        "Availability" : "A",
+        "man_fac" : "2-mar-2020",
+        "rent_det" : [
+                {
+                        "r_id" : 15,
+                        "c_id" : 105,
+                        "c_nm" : "Raj shrivastav",
+                        "rental_dt" : ISODate("2024-01-11T00:00:00Z"),
+                        "return_dt" : ISODate("2024-01-12T00:00:00Z"),
+                        "Totalcost" : 4500
+                }
+        ]
+}
+{
+        "_id" : ObjectId("664337ce416990b2465f8231"),
+        "car_id" : "c01",
+        "brand" : "Toyota",
+        "model_no" : "Mo1",
+        "model" : "Carmy",
+        "year" : 2022,
+        "color" : "black",
+        "c_type" : "sedan",
+        "Capacity" : 4,
+        "Availability" : "A",
+        "man_fac" : "10-may-2022",
+        "rent_det" : [
+                {
+                        "r_id" : 11,
+                        "c_id" : 101,
+                        "c_nm" : "Raj shrivastav",
+                        "rental_dt" : ISODate("2024-05-01T00:00:00Z"),
+                        "return_dt" : ISODate("2024-05-01T00:00:00Z"),
+                        "Totalcost" : 3000
+                }
+        ]
+}
+{
+        "_id" : ObjectId("664337ce416990b2465f8236"),
+        "car_id" : "c06",
+        "brand" : "BMW",
+        "model_no" : "Mo6",
+        "model" : "x5",
+        "year" : 2022,
+        "color" : "yellow",
+        "c_type" : "coupe",
+        "Capacity" : 2,
+        "Availability" : "A",
+        "man_fac" : "15-jun-2022",
+        "rent_det" : [
+                {
+                        "r_id" : 16,
+                        "c_id" : 106,
+                        "c_nm" : "Drashti",
+                        "rental_dt" : ISODate("2024-03-04T00:00:00Z"),
+                        "return_dt" : ISODate("2024-03-22T00:00:00Z"),
+                        "Totalcost" : 500
+                }
+        ]
+}
+{
+        "_id" : ObjectId("664337ce416990b2465f8232"),
+        "car_id" : "c02",
+        "brand" : "Honda",
+        "model_no" : "Mo2",
+        "model" : "Civik",
+        "year" : 2023,
+        "color" : "red",
+        "c_type" : "suv",
+        "Capacity" : 3,
+        "Availability" : "N",
+        "man_fac" : "10-apr-2023",
+        "rent_det" : [
+                {
+                        "r_id" : 12,
+                        "c_id" : 102,
+                        "c_nm" : "Ram",
+                        "rental_dt" : ISODate("2024-05-11T00:00:00Z"),
+                        "return_dt" : ISODate("2024-05-12T00:00:00Z"),
+                        "Totalcost" : 3300
+                }
+        ]
+}
+{
+        "_id" : ObjectId("664337ce416990b2465f8233"),
+        "car_id" : "c03",
+        "brand" : "BMW",
+        "model_no" : "Mo3",
+        "model" : "x5",
+        "year" : 2023,
+        "color" : "yellow",
+        "c_type" : "coupe",
+        "Capacity" : 2,
+        "Availability" : "A",
+        "man_fac" : "10-apr-2023",
+        "rent_det" : [
+                {
+                        "r_id" : 13,
+                        "c_id" : 103,
+                        "c_nm" : "Rahul",
+                        "rental_dt" : ISODate("2024-04-05T00:00:00Z"),
+                        "return_dt" : ISODate("2024-04-06T00:00:00Z"),
+                        "Totalcost" : 3500
+                }
+        ]
+}
+*****************************************************************
+
+> db.carrent.update({"model_no":{$in :['M01','M02']}},{$set:{des:'Good'}},{multi:true})
+*****************************************************************************************
+
+*****************************************************
+> db.carrent.find({"color":{$in :["red","gray"]}},{_id:0,brand:1}).pretty()
+{ "brand" : "Honda" }
+{ "brand" : "Toyota" }
+{ "brand" : "Honda" }
+{ "brand" : "Toyota" }
+******************************************************
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,111 @@
+>db.customer.insertMany([
+{c_id:'C123',Accbal:500,Atype:'s'},
+{c_id:'C123',Accbal:900,Atype:'s'},
+{c_id:'C111',Accbal:1200,Atype:'s'},
+{c_id:'C123',Accbal:1500,Atype:'c'}
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("663f3768709d99856246f832"),
+                ObjectId("663f3768709d99856246f833"),
+                ObjectId("663f3768709d99856246f834"),
+                ObjectId("663f3768709d99856246f835")
+        ]
+}
+******************************************
+> db.customer.find().count()
+4
+**************************************
+> db.customer.find({Atype:'s'}).count()
+3
+*********************************************
+> db.customer.aggregate([{$group:{'_id':'$Atype',no_count:{$sum:1}}}])
+{ "_id" : "c", "no_count" : 1 }
+{ "_id" : "s", "no_count" : 3 }
+************************************************************************
+> db.customer.aggregate([{$group:{_id:'$c_id',Total_acc_bal:{$sum:'$Accbal'}}}])
+{ "_id" : "C111", "Total_acc_bal" : 1200 }
+{ "_id" : "C123", "Total_acc_bal" : 2900 }
+********************************************
+> db.customer.aggregate([{$group:{_id:'$Atype',Total_acc_bal:{$sum:'$Accbal'}}}])
+{ "_id" : "c", "Total_acc_bal" : 1500 }
+{ "_id" : "s", "Total_acc_bal" : 2600 }
+**************************************************
+> db.customer.aggregate({$group:{_id:'$c_id',Max_bal:{$max:'$Accbal'}}})
+{ "_id" : "C111", "Max_bal" : 1200 }
+{ "_id" : "C123", "Max_bal" : 1500 }
+********************************************************
+> db.customer.aggregate({$group:{_id:'$c_id',Min_bal:{$min:'$Accbal'}}})
+{ "_id" : "C111", "Min_bal" : 1200 }
+{ "_id" : "C123", "Min_bal" : 500 }
+***************************************************
+> db.customer.aggregate({$match:{Atype:'s'}},{$group:{_id:'$c_id',Total_bal:{$sum:'$Accbal'}}},{$match:{Total_bal:{$gt:1200}}})
+{ "_id" : "C123", "Total_bal" : 1400 }
+********************************************************
+> db.customer.aggregate({$group:{_id:'$c_id',Avg_bal:{$avg:'$Accbal'}}})
+{ "_id" : "C111", "Avg_bal" : 1200 }
+{ "_id" : "C123", "Avg_bal" : 966.6666666666666 }
+*********************************************************
+> db.customer.aggregate({$group:{_id:'$c_id',First:{$first:'$Accbal'}}})
+{ "_id" : "C111", "First" : 1200 }
+{ "_id" : "C123", "First" : 500 }
+******************************************************
+> db.customer.aggregate({$group:{_id:'$c_id',First:{$last:'$Accbal'}}})
+{ "_id" : "C111", "First" : 1200 }
+{ "_id" : "C123", "First" : 1500 }
+*******************************************
+************************************************
+db.cart.insertMany([
+{cnm:'Amit',pnm:'Mouse',qty:1,price:2300},
+{cnm:'Rashi',pnm:'Pen',qty:5,price:10},
+{cnm:'Ram',pnm:'Notebook',qty:2,price:90}
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("663f3fa3709d99856246f836"),
+                ObjectId("663f3fa3709d99856246f837"),
+                ObjectId("663f3fa3709d99856246f838")
+        ]
+}
+***************************************
+> db.cart.aggregate([{$group:{_id:{cnm:'$cnm',pnm:'$pnm'},Total_amt:{$sum:{$multiply:['$price','$qty']}},count:{$sum:1}}}])
+{ "_id" : { "cnm" : "Ram", "pnm" : "Notebook" }, "Total_amt" : 180, "count" : 1 }
+{ "_id" : { "cnm" : "Rashi", "pnm" : "Pen" }, "Total_amt" : 50, "count" : 1 }
+{ "_id" : { "cnm" : "Amit", "pnm" : "Mouse" }, "Total_amt" : 2300, "count" : 1 }
+*********************************************************************************
+> db.coll.insert({date:ISODate()})
+WriteResult({ "nInserted" : 1 })
+> db.coll.find()
+{ "_id" : ObjectId("663f45b4709d99856246f839"), "date" : ISODate("2024-05-11T10:17:24.216Z") }
+*****************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

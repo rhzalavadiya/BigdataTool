@@ -1,0 +1,107 @@
+> use demo
+switched to db demo
+> db.result.insertMany([
+... {_id:1,subject:'History',score:88},
+... {_id:2,subject:'History',score:92},
+... {_id:3,subject:'History',score:97},
+... {_id:4,subject:'History',score:71},
+... {_id:5,subject:'History',score:79},
+... {_id:6,subject:'History',score:83}
+... ])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5, 6 ] }
+*********************************************************************
+> db.result.aggregate([{$match:{score:{$gt:80}}},{$count:'passing_score'}])
+{ "passing_score" : 4 }
+**************************************************************************
+> db.result.update({},{$set:{status:'A'}},{multi:true})
+WriteResult({ "nMatched" : 6, "nUpserted" : 0, "nModified" : 6 })
+****************************************
+> db.result.find()
+{ "_id" : 1, "subject" : "History", "score" : 88, "status" : "A" }
+{ "_id" : 2, "subject" : "History", "score" : 92, "status" : "A" }
+{ "_id" : 3, "subject" : "History", "score" : 97, "status" : "A" }
+{ "_id" : 4, "subject" : "History", "score" : 71, "status" : "A" }
+{ "_id" : 5, "subject" : "History", "score" : 79, "status" : "A" }
+{ "_id" : 6, "subject" : "History", "score" : 83, "status" : "A" }
+*******************************************************************
+> db.customer.insertMany([ {c_id:'C123',Accbal:500,Atype:'s'}, {c_id:'C123',Accbal:900,Atype:'s'}, {c_id:'C111',Accbal:1200,Atype:'s'}, {c_id:'C123',Accbal:1500,Atype:'c'} ])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6641dcc9589284c52f9f7c26"),
+                ObjectId("6641dcc9589284c52f9f7c27"),
+                ObjectId("6641dcc9589284c52f9f7c28"),
+                ObjectId("6641dcc9589284c52f9f7c29")
+        ]
+}
+*************************************************************
+mongoexport --db demo --collection customer --out Z:\cust.txt  
+*********************************************************
+ mongoexport --db demo --collection customer --type=csv --fields c_id,Accbal,Atype --out Z:\cust.txt
+*****************************************************************************
+> mongoexport --db demo --collection customer --limit 2 --type=csv --fields c_id,Accbal,Atype --out Z:\cust.txt
+****************************************************
+> mongoimport --db demo --collection customer --type=csv --file Z:\cust.txt --headerline
+***************************************************************
+> mongoimport --db demo --collection customer --limit 2 --type=csv --fields c_id,Accbal,Atype --fiel Z:\cust.txt
+*************************************************************************
+db.user.insertMany([
+{_id:1,name:'Bob',task:[{title:'task 1',completed:true},{title:'task 2',completed:true},{title:'task 3',completed:false}]},
+{_id:1,name:'Charlie',task:[{title:'task 1',completed:false},{title:'task 2',completed:false}]},
+{_id:1,name:'David',task:[{title:'task 1',completed:true},{title:'task 2',completed:true},{title:'task 3',completed:true},{title:'task 4',completed:false}]}
+])
+> db.user.find({task:{$eleMatch:{completed:true}}})
+***************************
+> db.user.find({'task.title':'task 2'})
+{ "_id" : 1, "name" : "Bob", "task" : [ { "title" : "task 1", "completed" : true }, { "title" : "task 2", "completed" : true }, { "title" : "task 3", "completed" : false } ] }
+*********************
+> db.user.find({'task.title':'task 3'})
+{ "_id" : 1, "name" : "Bob", "task" : [ { "title"  : "task 1", "completed" : true }, { "title" : "task 2", "completed" : true }, { "title" : "task 3", "completed" : false } ] }
+*********************************************
+> db.user.find({task:{$size :2}})
+*****************************************************
+> db.member.insertOne({_id:'M01','DOJ':new Date()})
+{ "acknowledged" : true, "insertedId" : "M01" }
+> db.member.insertOne({_id:'M02','DOJ':new ISODate()})
+{ "acknowledged" : true, "insertedId" : "M02" }
+> db.member.find()
+{ "_id" : "M01", "DOJ" : ISODate("2024-05-13T10:09:45.758Z") }
+{ "_id" : "M02", "DOJ" : ISODate("2024-05-13T10:09:58.054Z") }
+*********************************************************************
+> db.member.find({'DOJ':{$gt:ISODate("2023-05-01T00:00:00Z")}})
+{ "_id" : "M01", "DOJ" : ISODate("2024-05-13T10:09:45.758Z") }
+{ "_id" : "M02", "DOJ" : ISODate("2024-05-13T10:09:58.054Z") }
+> db.member.find({'DOJ':{$lt:ISODate("2023-05-01T00:00:00Z")}})
+************************************************************
+> db.member.find({'DOJ':{$lt:ISODate("2024-06-01T00:00:00Z")}})
+{ "_id" : "M01", "DOJ" : ISODate("2024-05-13T10:09:45.758Z") }
+{ "_id" : "M02", "DOJ" : ISODate("2024-05-13T10:09:58.054Z") }
+***********************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

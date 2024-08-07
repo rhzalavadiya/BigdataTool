@@ -1,0 +1,179 @@
+> db.EMPLOYEE_MASTER.find().sort({Name:1}).pretty() // Sort the column
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e9"),
+        "Empno" : 7,
+        "Name" : "Akash",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2014-05-20T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 50000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Java",
+                "SQL"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e7"),
+        "Empno" : 5,
+        "Name" : "Amit",
+        "Designation" : "Accountant",
+        "DOJ" : ISODate("2020-02-14T00:00:00Z"),
+        "Department" : "Accounts",
+        "Salary" : 40000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Accounting",
+                "Financial Analysis"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e8"),
+        "Empno" : 6,
+        "Name" : "Rachel",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2019-08-10T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 48000,
+        "Gender" : "Female",
+        "Skills" : [
+                "C++",
+                "JavaScript"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e6"),
+        "Empno" : 4,
+        "Name" : "Sophia",
+        "Designation" : "HR Manager",
+        "DOJ" : ISODate("2017-09-30T00:00:00Z"),
+        "Department" : "HR",
+        "Salary" : 55000,
+        "Gender" : "Female",
+        "Skills" : [
+                "Recruitment",
+                "Employee Relations"
+        ]
+}
+> db.EMPLOYEE_MASTER.find().sort({Name:-1}).pretty()
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e6"),
+        "Empno" : 4,
+        "Name" : "Sophia",
+        "Designation" : "HR Manager",
+        "DOJ" : ISODate("2017-09-30T00:00:00Z"),
+        "Department" : "HR",
+        "Salary" : 55000,
+        "Gender" : "Female",
+        "Skills" : [
+                "Recruitment",
+                "Employee Relations"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e8"),
+        "Empno" : 6,
+        "Name" : "Rachel",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2019-08-10T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 48000,
+        "Gender" : "Female",
+        "Skills" : [
+                "C++",
+                "JavaScript"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e7"),
+        "Empno" : 5,
+        "Name" : "Amit",
+        "Designation" : "Accountant",
+        "DOJ" : ISODate("2020-02-14T00:00:00Z"),
+        "Department" : "Accounts",
+        "Salary" : 40000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Accounting",
+                "Financial Analysis"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e9"),
+        "Empno" : 7,
+        "Name" : "Akash",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2014-05-20T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 50000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Java",
+                "SQL"
+        ]
+}
+****************************************
+> db.EMPLOYEE_MASTER.find({Name:/^akash$/i}).pretty() // case sensitive....
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e9"),
+        "Empno" : 7,
+        "Name" : "Akash",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2014-05-20T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 50000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Java",
+                "SQL"
+        ]
+}
+************************************************************************
+> db.createCollection("Product")
+{ "ok" : 1 }
+
+> db.Product.insertMany([{_id:1,Name:"Coke"},{_id:2,Name:"Pepsi"},{_id:3,Name:"&Up"}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+
+> db.Product.find()
+{ "_id" : 1, "Name" : "Coke" }
+{ "_id" : 2, "Name" : "Pepsi" }
+{ "_id" : 3, "Name" : "&Up" }
+********************************************
+Add  New Field only one record
+
+> db.Product.update({_id:1},{$set:{price:100}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Product.find()
+{ "_id" : 1, "Name" : "Coke", "price" : 100 }
+{ "_id" : 2, "Name" : "Pepsi" }
+{ "_id" : 3, "Name" : "&Up" }
+*****************************************************
+Add Ne Field with Multiple record
+> db.Product.update({},{$set:{UOM:"EA"}},{multi:true})
+WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+> db.Product.find()
+{ "_id" : 1, "Name" : "Coke", "price" : 100, "UOM" : "EA" }
+{ "_id" : 2, "Name" : "Pepsi", "UOM" : "EA" }
+{ "_id" : 3, "Name" : "&Up", "UOM" : "EA" }
+*********************************************
+Update Field
+ > db.emp.insertMany([{_id:1,Name:"Jay",Dept:"MCA",sal:1000,bonus:100},{_id:2,Name:"Ami",Dept:"MCA",sal:2000,bonus:1000},{_id:3,Name:"John",Dept:"MCA",sal:3000,bonus:1000}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+ > db.emp.update({},{$set:{Status:"A"}},{multi:true})// add Field
+WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+> db.emp.find()
+{ "_id" : 1, "Name" : "Jay", "Dept" : "MCA", "sal" : 1000, "bonus" : 100, "Status" : "A" }
+{ "_id" : 2, "Name" : "Ami", "Dept" : "MCA", "sal" : 2000, "bonus" : 1000, "Status" : "A" }
+{ "_id" : 3, "Name" : "John", "Dept" : "MCA", "sal" : 3000, "bonus" : 1000, "Status" : "A" }
+************************************************************************
+> db.emp.update({"Name":"Jay"},{$set:{"sal":1001}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+*********************************************************************  
+> db.emp.update({},{$set:{"sal":10000}},{multi:true})
+WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+****************************************************************
+db.emp.update({},{$set:{"sal":{$gt:1000}},{$mul:{"sal":10}}},{multi:true}) 
+***********************************************************
+ db.Student.update({"rollno":3,"Name":"Ami","Grade":"II"},{$set:{"Hobbies":"sketing"}},{upsert:true});
+***************************************************************

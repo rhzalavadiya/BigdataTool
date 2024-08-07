@@ -1,0 +1,92 @@
+Create a new MongoDB database called “TEACHER”.
+Within “TEACHER” database, create a collection named “TEACHER_MASTER”.
+Assume an appropriate Schema consisting of fields like Name, Age, Subject(array),
+DOB, Gender, Salary, City
+*************************************************************************
+
+use TEACHER
+switched to db TEACHER
+> db.createCollection("TEACHER_MASTER")
+{ "ok" : 1 }
+
+1. Insert 7 documents into the above collection.
+
+db.TEACHER_MASTER.insertMany([
+  { Name: "John", Age: 35, Subject: ["Math", "Physics"], DOB: new Date("1982-05-15"), Gender: "Male", Salary: 50000, City: "Ahmedabad" },
+  { Name: "Sarah", Age: 28, Subject: ["English", "History"], DOB: new Date("1996-08-20"), Gender: "Female", Salary: 45000, City: "Delhi" },
+  { Name: "Anil", Age: 40, Subject: ["Hindi", "Geography"], DOB: new Date("1979-03-10"), Gender: "Male", Salary: 55000, City: "Ahmedabad" },
+  { Name: "Priya", Age: 32, Subject: ["Chemistry", "Biology"], DOB: new Date("1989-12-05"), Gender: "Female", Salary: 48000, City: "Mumbai" },
+  { Name: "Raj", Age: 45, Subject: ["English", "Economics"], DOB: new Date("1978-06-25"), Gender: "Male", Salary: 60000, City: "Chennai" },
+  { Name: "Manisha", Age: 38, Subject: ["Physics", "Math"], DOB: new Date("1984-09-30"), Gender: "Female", Salary: 52000, City: "Ahmedabad" },
+  { Name: "Amit", Age: 29, Subject: ["Computer Science", "Programming"], DOB: new Date("1995-02-18"), Gender: "Male", Salary: 47000, City: "Ahmedabad" }
+])
+*************************************************************************
+2. Display Name, Subject, Gender and Salary.
+
+> db.TEACHER_MASTER.find({},{_id:0,Name: 1, Subject: 1, Gender: 1, Salary: 1})
+{ "Name" : "John", "Subject" : [ "Math", "Physics" ], "Gender" : "Male", "Salary" : 50000 }
+{ "Name" : "Sarah", "Subject" : [ "English", "History" ], "Gender" : "Female", "Salary" : 45000 }
+{ "Name" : "Anil", "Subject" : [ "Hindi", "Geography" ], "Gender" : "Male", "Salary" : 55000 }
+{ "Name" : "Priya", "Subject" : [ "Chemistry", "Biology" ], "Gender" : "Female", "Salary" : 48000 }
+{ "Name" : "Raj", "Subject" : [ "English", "Economics" ], "Gender" : "Male", "Salary" : 60000 }
+{ "Name" : "Manisha", "Subject" : [ "Physics", "Math" ], "Gender" : "Female", "Salary" : 52000 }
+{ "Name" : "Amit", "Subject" : [ "Computer Science", "Programming" ], "Gender" : "Male", "Salary" : 47000 }
+*************************************************************************
+3. Display teacher, which are from the city “Ahmedabad”.
+
+> db.TEACHER_MASTER.find({City: "Ahmedabad"})
+{ "_id" : ObjectId("663360e6e43131a27713d3de"), "Name" : "John", "Age" : 35, "Subject" : [ "Math", "Physics" ], "DOB" : ISODate("1982-05-15T00:00:00Z"), "Gender" : "Male", "Salary" : 50000, "City" : "Ahmedabad" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e0"), "Name" : "Anil", "Age" : 40, "Subject" : [ "Hindi", "Geography" ], "DOB" : ISODate("1979-03-10T00:00:00Z"), "Gender" : "Male", "Salary" : 55000, "City" : "Ahmedabad" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e3"), "Name" : "Manisha", "Age" : 38, "Subject" : [ "Physics", "Math" ], "DOB" : ISODate("1984-09-30T00:00:00Z"), "Gender" : "Female", "Salary" : 52000, "City" : "Ahmedabad" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e4"), "Name" : "Amit", "Age" : 29, "Subject" : [ "Computer Science", "Programming" ], "DOB" : ISODate("1995-02-18T00:00:00Z"), "Gender" : "Male", "Salary" : 47000, "City" : "Ahmedabad" }
+*************************************************************************
+4. Display the teacher id, name, city and DOB.
+
+> db.TEACHER_MASTER.find({},{_id:0,Name: 1, City: 1,DOB: 1})
+{ "Name" : "John", "DOB" : ISODate("1982-05-15T00:00:00Z"), "City" : "Ahmedabad" }
+{ "Name" : "Sarah", "DOB" : ISODate("1996-08-20T00:00:00Z"), "City" : "Delhi" }
+{ "Name" : "Anil", "DOB" : ISODate("1979-03-10T00:00:00Z"), "City" : "Ahmedabad" }
+{ "Name" : "Priya", "DOB" : ISODate("1989-12-05T00:00:00Z"), "City" : "Mumbai" }
+{ "Name" : "Raj", "DOB" : ISODate("1978-06-25T00:00:00Z"), "City" : "Chennai" }
+{ "Name" : "Manisha", "DOB" : ISODate("1984-09-30T00:00:00Z"), "City" : "Ahmedabad" }
+{ "Name" : "Amit", "DOB" : ISODate("1995-02-18T00:00:00Z"), "City" : "Ahmedabad" }
+*************************************************************************
+5. Display the teachers whose gender is female and teach either “Hindi” or
+“English” subject.
+
+> db.TEACHER_MASTER.find({Gender : "Female" ,Subject :{$in :["Hindi","English"]}})
+{ "_id" : ObjectId("663360e6e43131a27713d3df"), "Name" : "Sarah", "Age" : 28, "Subject" : [ "English", "History" ], "DOB" : ISODate("1996-08-20T00:00:00Z"), "Gender" : "Female", "Salary" : 45000, "City" : "Delhi" }
+*************************************************************************
+6. Update all those documents where name of teacher is “Anil” with the new
+value of subject as “English”.
+
+> db.TEACHER_MASTER.updateMany({Name: "Anil"},{$set: {Subject :["English"]}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.TEACHER_MASTER.find({Name : "Anil"})
+{ "_id" : ObjectId("663360e6e43131a27713d3e0"), "Name" : "Anil", "Age" : 40, "Subject" : [ "English" ], "DOB" : ISODate("1979-03-10T00:00:00Z"), "Gender" : "Male", "Salary" : 55000, "City" : "Ahmedabad" }
+*************************************************************************
+7. Delete data of all those teachers who were born after 1st January 1980.
+
+*************************************************************************
+8. Remove field age.
+
+*************************************************************************
+9. Display the teachers that do not teach “English” subject and their salary is
+more than 30000.
+
+> db.TEACHER_MASTER.find({Subject : {$ne :"English"},Salary:{$gt : 30000}})
+{ "_id" : ObjectId("663360e6e43131a27713d3de"), "Name" : "John", "Age" : 35, "Subject" : [ "Math", "Physics" ], "DOB" : ISODate("1982-05-15T00:00:00Z"), "Gender" : "Male", "Salary" : 50000, "City" : "Ahmedabad" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e0"), "Name" : "Anil", "Age" : 40, "Subject" : [ "Hindi", "Geography" ], "DOB" : ISODate("1979-03-10T00:00:00Z"), "Gender" : "Male", "Salary" : 55000, "City" : "Ahmedabad" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e1"), "Name" : "Priya", "Age" : 32, "Subject" : [ "Chemistry", "Biology" ], "DOB" : ISODate("1989-12-05T00:00:00Z"), "Gender" : "Female", "Salary" : 48000, "City" : "Mumbai" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e3"), "Name" : "Manisha", "Age" : 38, "Subject" : [ "Physics", "Math" ], "DOB" : ISODate("1984-09-30T00:00:00Z"), "Gender" : "Female", "Salary" : 52000, "City" : "Ahmedabad" }
+{ "_id" : ObjectId("663360e6e43131a27713d3e4"), "Name" : "Amit", "Age" : 29, "Subject" : [ "Computer Science", "Programming" ], "DOB" : ISODate("1995-02-18T00:00:00Z"), "Gender" : "Male", "Salary" : 47000, "City" : "Ahmedabad" }
+>
+*************************************************************************
+10. Find all the teachers having gender “Male” and display salary for them.
+
+> db.TEACHER_MASTER.find({Gender : "Male"},{_id:0,Name:1,Salary:1})
+{ "Name" : "John", "Salary" : 50000 }
+{ "Name" : "Anil", "Salary" : 55000 }
+{ "Name" : "Raj", "Salary" : 60000 }
+{ "Name" : "Amit", "Salary" : 47000 }
+

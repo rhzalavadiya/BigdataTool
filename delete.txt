@@ -1,0 +1,36 @@
+> db.faculty.insertMany([{_id:1,Name:"Jay",Dept:"MCA",bonus:1000},{_id:2,Name:"Ami",Dept:"MCA",bonus:1000},{_id:3,Name:"John",Dept:"MCA",bonus:1000}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+> db.facult .find()
+{ "_id" : 1, "Name" : "Jay", "Dept" : "MCA", "bonus" : 1000 }
+{ "_id" : 2, "Name" : "Ami", "Dept" : "MCA", "bonus" : 1000 }
+{ "_id" : 3, "Name" : "John", "Dept" : "MCA", "bonus" : 1000 }
+************************************************************************
+> db.facult.update({_id:1},{$unset:{bonus:1000}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.facult .find()
+{ "_id" : 1, "Name" : "Jay", "Dept" : "MCA" }
+{ "_id" : 2, "Name" : "Ami", "Dept" : "MCA", "bonus" : 1000 }
+{ "_id" : 3, "Name" : "John", "Dept" : "MCA", "bonus" : 1000 }
+********************************************************
+> db.facult.update({},{$unset:{bonus:1000}},{multi:true})
+WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 2 })
+> db.facult .find()
+{ "_id" : 1, "Name" : "Jay", "Dept" : "MCA" }
+{ "_id" : 2, "Name" : "Ami", "Dept" : "MCA" }
+{ "_id" : 3, "Name" : "John", "Dept" : "MCA" }
+*********************************************************
+> db.facult.remove({})
+WriteResult({ "nRemoved" : 3 })
+**********************************************
+> db.faculty.remove({Name:"Jay"})
+WriteResult({ "nRemoved" : 1 })
+********************************************************************
+> db.faculty .update({},{$set:{status:'A'}},{multi:true})
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+**********************************************
+> db.faculty .deleteOne({status:'D'})
+{ "acknowledged" : true, "deletedCount" : 1 }
+*********************************************************
+> db.faculty .deleteMany({status:'A'})
+{ "acknowledged" : true, "deletedCount" : 2 }
+****************************************************

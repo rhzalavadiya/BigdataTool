@@ -1,0 +1,452 @@
+db.createCollection("Student")
+1)
+db.Student.insertMany([
+{"rollno":1,"Name":"Rahul","Grade":"VII","Hobbies":["Internet Suffering"],DOJ:new Date("2003-02-22")},
+{"rollno":2,"Name":"Raj","Grade":"I","Hobbies":["Cricket","Chess"],DOJ:new Date("2003-04-17")},
+{"rollno":3,"Name":"Ami","Grade":"II","Hobbies":["Dancing","singing"],DOJ:new Date("2022-01-17")},
+{"rollno":4,"Name":"Rohan","Grade":"III","Hobbies":["Chess","Reading"],DOJ:new Date("2002-08-01")},
+{"rollno":5,"Name":"Akhay","Grade":"VII","Hobbies":["Internet Suffering","Dancing"],DOJ:new Date("2023-07-22")},
+{"rollno":6,"Name":"Sati","Grade":"VII","Hobbies":["Internet Suffering"],DOJ:new Date("2024-01-10")},
+{"rollno":7,"Name":"Sona","Grade":"VII","Hobbies":["Dancing","Chess"],DOJ:new Date("2003-02-22")},
+{"rollno":8,"Name":"Rupali","Grade":"VII","Hobbies":["travelling"],DOJ:new Date("2003-02-22")},
+{"rollno":9,"Name":"drashti","Grade":"I","Hobbies":["Cricket","Chess"],DOJ:new Date("2003-04-17")},
+{"rollno":10,"Name":"Krina","Grade":"II","Hobbies":["Dancing","singing"],DOJ:new Date("2022-01-17")}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6634af863b10be419fbfa3ea"),
+                ObjectId("6634af863b10be419fbfa3eb"),
+                ObjectId("6634af863b10be419fbfa3ec"),
+                ObjectId("6634af863b10be419fbfa3ed"),
+                ObjectId("6634af863b10be419fbfa3ee"),
+                ObjectId("6634af863b10be419fbfa3ef"),
+                ObjectId("6634af863b10be419fbfa3f0"),
+		ObjectId("6634b0103b10be419fbfa3f1"),
+                ObjectId("6634b0103b10be419fbfa3f2"),
+                ObjectId("6634b0103b10be419fbfa3f3")
+        ]
+}
+****************************************************************
+2)
+> db.Student.find({"Name":"Akhay"}).pretty()
+> db.Student.find({"Name":/^akhay$/i}).pretty()
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ee"),
+        "rollno" : 5,
+        "Name" : "Akhay",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering",
+                "Dancing"
+        ],
+        "DOJ" : ISODate("2023-07-22T00:00:00Z")
+}
+*********************************************************
+3)
+> db.Student.find({},{_id:0}).pretty()
+{
+        "rollno" : 1,
+        "Name" : "Rahul",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z")
+}
+{
+        "rollno" : 2,
+        "Name" : "Raj",
+        "Grade" : "I",
+        "Hobbies" : [
+                "Cricket",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-04-17T00:00:00Z")
+}
+{
+        "rollno" : 3,
+        "Name" : "Ami",
+        "Grade" : "II",
+        "Hobbies" : [
+                "Dancing",
+                "singing"
+        ],
+        "DOJ" : ISODate("2022-01-17T00:00:00Z")
+}
+{
+        "rollno" : 4,
+        "Name" : "Rohan",
+        "Grade" : "III",
+        "Hobbies" : [
+                "Chess",
+                "Reading"
+        ],
+        "DOJ" : ISODate("2002-08-01T00:00:00Z")
+}
+{
+        "rollno" : 5,
+        "Name" : "Akhay",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering",
+                "Dancing"
+        ],
+        "DOJ" : ISODate("2023-07-22T00:00:00Z")
+}
+{
+        "rollno" : 6,
+        "Name" : "Sati",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering"
+        ],
+        "DOJ" : ISODate("2024-01-10T00:00:00Z")
+}
+{
+        "rollno" : 7,
+        "Name" : "Sona",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Dancing",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z")
+}
+{
+        "rollno" : 8,
+        "Name" : "Rupali",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "travelling"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z")
+}
+{
+        "rollno" : 9,
+        "Name" : "drashti",
+        "Grade" : "I",
+        "Hobbies" : [
+                "Cricket",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-04-17T00:00:00Z")
+}
+{
+        "rollno" : 10,
+        "Name" : "Krina",
+        "Grade" : "II",
+        "Hobbies" : [
+                "Dancing",
+                "singing"
+        ],
+        "DOJ" : ISODate("2022-01-17T00:00:00Z")
+}
+*************************************
+4)
+
+> db.Student.find({},{"Name":1,"Grade":1,_id:0}).pretty()
+{ "Name" : "Rahul", "Grade" : "VII" }
+{ "Name" : "Raj", "Grade" : "I" }
+{ "Name" : "Ami", "Grade" : "II" }
+{ "Name" : "Rohan", "Grade" : "III" }
+{ "Name" : "Akhay", "Grade" : "VII" }
+{ "Name" : "Sati", "Grade" : "VII" }
+{ "Name" : "Sona", "Grade" : "VII" }
+{ "Name" : "Rupali", "Grade" : "VII" }
+{ "Name" : "drashti", "Grade" : "I" }
+{ "Name" : "Krina", "Grade" : "II" }
+**************************************
+5)
+> db.Student.find({"rollno":1},{"Name":1,"Grade":1,_id:0}).pretty()
+{ "Name" : "Rahul", "Grade" : "VII" }
+***********************************************
+f)
+> db.Student.update({},{$set:{"Address":"Ahemdabad"}},{multi:true})
+WriteResult({ "nMatched" : 10, "nUpserted" : 0, "nModified" : 10 })
+*******************************************************
+g)
+> db.Student.find({"Grade":"VII"}).pretty()
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ea"),
+        "rollno" : 1,
+        "Name" : "Rahul",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ee"),
+        "rollno" : 5,
+        "Name" : "Akhay",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering",
+                "Dancing"
+        ],
+        "DOJ" : ISODate("2023-07-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ef"),
+        "rollno" : 6,
+        "Name" : "Sati",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering"
+        ],
+        "DOJ" : ISODate("2024-01-10T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3f0"),
+        "rollno" : 7,
+        "Name" : "Sona",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Dancing",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634b0103b10be419fbfa3f1"),
+        "rollno" : 8,
+        "Name" : "Rupali",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "travelling"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+*************************************************************
+h)
+> db.Student.find({"Grade":{$ne:"VII"}}).pretty()
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3eb"),
+        "rollno" : 2,
+        "Name" : "Raj",
+        "Grade" : "I",
+        "Hobbies" : [
+                "Cricket",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-04-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ec"),
+        "rollno" : 3,
+        "Name" : "Ami",
+        "Grade" : "II",
+        "Hobbies" : [
+                "Dancing",
+                "singing"
+        ],
+        "DOJ" : ISODate("2022-01-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ed"),
+        "rollno" : 4,
+        "Name" : "Rohan",
+        "Grade" : "III",
+        "Hobbies" : [
+                "Chess",
+                "Reading"
+        ],
+        "DOJ" : ISODate("2002-08-01T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634b0103b10be419fbfa3f2"),
+        "rollno" : 9,
+        "Name" : "drashti",
+        "Grade" : "I",
+        "Hobbies" : [
+                "Cricket",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-04-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634b0103b10be419fbfa3f3"),
+        "rollno" : 10,
+        "Name" : "Krina",
+        "Grade" : "II",
+        "Hobbies" : [
+                "Dancing",
+                "singing"
+        ],
+        "DOJ" : ISODate("2022-01-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+***************************************************
+i)
+
+> db.Student.find({ Hobbies: { $in: ["chess", "Dancing"] } }).pretty()
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ee"),
+        "rollno" : 5,
+        "Name" : "Akhay",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering",
+                "Dancing"
+        ],
+        "DOJ" : ISODate("2023-07-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3f0"),
+        "rollno" : 7,
+        "Name" : "Sona",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Dancing",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634b0103b10be419fbfa3f3"),
+        "rollno" : 10,
+        "Name" : "Krina",
+        "Grade" : "II",
+        "Hobbies" : [
+                "Dancing",
+                "singing"
+        ],
+        "DOJ" : ISODate("2022-01-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+*********************************************
+J)
+> db.Student.find({ Hobbies: { $nin: ["chess", "Dancing"] } }).pretty()
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ea"),
+        "rollno" : 1,
+        "Name" : "Rahul",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3eb"),
+        "rollno" : 2,
+        "Name" : "Raj",
+        "Grade" : "I",
+        "Hobbies" : [
+                "Cricket",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-04-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ec"),
+        "rollno" : 3,
+        "Name" : "Ami",
+        "Grade" : "II",
+        "Hobbies" : "sketing",
+        "DOJ" : ISODate("2022-01-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ed"),
+        "rollno" : 4,
+        "Name" : "Rohan",
+        "Grade" : "III",
+        "Hobbies" : [
+                "Chess",
+                "Reading"
+        ],
+        "DOJ" : ISODate("2002-08-01T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634af863b10be419fbfa3ef"),
+        "rollno" : 6,
+        "Name" : "Sati",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "Internet Suffering"
+        ],
+        "DOJ" : ISODate("2024-01-10T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634b0103b10be419fbfa3f1"),
+        "rollno" : 8,
+        "Name" : "Rupali",
+        "Grade" : "VII",
+        "Hobbies" : [
+                "travelling"
+        ],
+        "DOJ" : ISODate("2003-02-22T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+{
+        "_id" : ObjectId("6634b0103b10be419fbfa3f2"),
+        "rollno" : 9,
+        "Name" : "drashti",
+        "Grade" : "I",
+        "Hobbies" : [
+                "Cricket",
+                "Chess"
+        ],
+        "DOJ" : ISODate("2003-04-17T00:00:00Z"),
+        "Address" : "Ahemdabad"
+}
+****************************************************
+k) Find those documents where the student name begins with ‘M’.
+ db.Student.find({ "Name": /^M/ })
+>
+*******************************************************************
+l) Find those documents where the student name has an “e” in any position.
+> db.Student.find({ "Name": /e/ })
+>
+*************************************************************
+m) Find those documents where the student name ends in “a”.
+> db.Student.find({ "Name": /a$/ })
+{ "_id" : ObjectId("663b39e23b96882debecbec6"), "rollno" : 7, "Name" : "Sona", "Grade" : "VII", "Hobbies" : [ "Dancing", "Chess" ], "DOJ" : ISODate("2003-02-22T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec9"), "rollno" : 10, "Name" : "Krina", "Grade" : "II", "Hobbies" : [ "Dancing", "singing" ], "DOJ" : ISODate("2022-01-17T00:00:00Z") }
+
+*****************************************************
+n) Find total number of documents.
+> db.Student.count()
+10
+***************************************************
+o) Find total number of documents where Grade is ‘VII’.
+> db.Student.count({ "Grade": "VII" })
+5
+************************************************************
+p) Sort the documents in ascending order of student name.
+> db.Student.find().sort({ "Name": 1 })
+{ "_id" : ObjectId("663b39e23b96882debecbec4"), "rollno" : 5, "Name" : "Akhay", "Grade" : "VII", "Hobbies" : [ "Internet Suffering", "Dancing" ], "DOJ" : ISODate("2023-07-22T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec2"), "rollno" : 3, "Name" : "Ami", "Grade" : "II", "Hobbies" : [ "Dancing", "singing" ], "DOJ" : ISODate("2022-01-17T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec9"), "rollno" : 10, "Name" : "Krina", "Grade" : "II", "Hobbies" : [ "Dancing", "singing" ], "DOJ" : ISODate("2022-01-17T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec0"), "rollno" : 1, "Name" : "Rahul", "Grade" : "VII", "Hobbies" : [ "Internet Suffering" ], "DOJ" : ISODate("2003-02-22T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec1"), "rollno" : 2, "Name" : "Raj", "Grade" : "I", "Hobbies" : [ "Cricket", "Chess" ], "DOJ" : ISODate("2003-04-17T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec3"), "rollno" : 4, "Name" : "Rohan", "Grade" : "III", "Hobbies" : [ "Chess", "Reading" ], "DOJ" : ISODate("2002-08-01T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec7"), "rollno" : 8, "Name" : "Rupali", "Grade" : "VII", "Hobbies" : [ "travelling" ], "DOJ" : ISODate("2003-02-22T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec5"), "rollno" : 6, "Name" : "Sati", "Grade" : "VII", "Hobbies" : [ "Internet Suffering" ], "DOJ" : ISODate("2024-01-10T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec6"), "rollno" : 7, "Name" : "Sona", "Grade" : "VII", "Hobbies" : [ "Dancing", "Chess" ], "DOJ" : ISODate("2003-02-22T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec8"), "rollno" : 9, "Name" : "drashti", "Grade" : "I", "Hobbies" : [ "Cricket", "Chess" ], "DOJ" : ISODate("2003-04-17T00:00:00Z") }
+********************************************************
+q) Display the last two records.  
+> db.Student.find().sort({ "Name": -1 }).limit(2)
+{ "_id" : ObjectId("663b39e23b96882debecbec8"), "rollno" : 9, "Name" : "drashti", "Grade" : "I", "Hobbies" : [ "Cricket", "Chess" ], "DOJ" : ISODate("2003-04-17T00:00:00Z") }
+{ "_id" : ObjectId("663b39e23b96882debecbec6"), "rollno" : 7, "Name" : "Sona", "Grade" : "VII", "Hobbies" : [ "Dancing", "Chess" ], "DOJ" : ISODate("2003-02-22T00:00:00Z") }
+****************************************************
+
+

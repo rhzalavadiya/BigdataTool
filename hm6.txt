@@ -1,0 +1,153 @@
+db.employees.insertMany([
+    {  _id:1,        firstName: "John",        lastName: "King",        email: "john.king@abc.com",        salary: 5000    },
+    {  _id:2,        firstName: "Sachin",      lastName: "T",        email: "sachin.t@abc.com",        salary: 8000    },
+    {   _id:3,        firstName: "James",        lastName: "Bond",        email: "jamesb@abc.com",        salary: 7500    },
+    {  _id:4,        firstName: "Steve",        lastName: "J",        email: "steve.j@abc.com",        salary: 7000    },
+    {  _id:5,        firstName: "Kapil",        lastName: "D",        email: "kapil.d@abc.com",        salary: 4500    },
+    {  _id:6,        firstName: "Amitabh",        lastName: "B",        email: "amitabh.b@abc.com",        salary: 7000    }
+])
+*********************************************************
+
+**********************************************************************
+Book name, isbn number, author name( can be more than one author), issue
+date, return date, price, member identification number, book category ( it can
+be reference book, text book, journal, magazine), status ( 1 for available and 0
+for not available)
+Perform the following queries using MongoDB database
+1. insert 7 record
+> db.library.insertMany([
+...     {
+...         "book_name": "Computer Networks",
+...         "isbn": "978-0136108047",
+...         "authors": ["James F. Kurose", "Keith W. Ross"],
+...         "issue_date": ISODate("2024-05-01"),
+...         "return_date": ISODate("2024-06-01"),
+...         "price": 45.99,
+...         "member_id": "MC01",
+...         "category": "textbook",
+...         "status": 1
+...     },
+...     {
+...         "book_name": "Network Security",
+...         "isbn": "978-0136108054",
+...         "authors": ["William Stallings"],
+...         "issue_date": ISODate("2024-05-02"),
+...         "return_date": ISODate("2024-06-02"),
+...         "price": 39.99,
+...         "member_id": "MC02",
+...         "category": "network security",
+...         "status": 1
+...     },
+...     {
+...         "book_name": "Data Communication",
+...         "isbn": "978-0073376226",
+...         "authors": ["Behrouz A. Forouzan"],
+...         "issue_date": ISODate("2024-05-03"),
+...         "return_date": ISODate("2024-06-03"),
+...         "price": 49.99,
+...         "member_id": "MC03",
+...         "category": "computer network",
+...         "status": 0
+...     },
+...     {
+...         "book_name": "DBMS",
+...         "isbn": "978-0072465631",
+...         "authors": ["Raghu Ramakrishnan", "Johannes Gehrke"],
+...         "issue_date": ISODate("2024-05-04"),
+...         "return_date": ISODate("2024-06-04"),
+...         "price": 55.99,
+...         "member_id": "MC04",
+...         "category": "textbook",
+...         "status": 1
+...     },
+...     {
+...         "book_name": "Python Programming",
+...         "isbn": "978-1590282755",
+...         "authors": ["John Zelle"],
+...         "issue_date": ISODate("2024-05-05"),
+...         "return_date": ISODate("2024-06-05"),
+...         "price": 29.99,
+...         "member_id": "MC05",
+...         "category": "textbook",
+...         "status": 1
+...     },
+...     {
+...         "book_name": "IEEE Transactions",
+...         "isbn": "1548-1336",
+...         "authors": ["IEEE"],
+...         "issue_date": ISODate("2024-05-06"),
+...         "return_date": ISODate("2024-06-06"),
+...         "price": 15.99,
+...         "member_id": "MC06",
+...         "category": "journal",
+...         "status": 0
+...     },
+...     {
+...         "book_name": "National Geographic",
+...         "isbn": "NG123456",
+...         "authors": ["National Geographic Society"],
+...         "issue_date": ISODate("2024-05-07"),
+...         "return_date": ISODate("2024-06-07"),
+...         "price": 8.99,
+...         "member_id": "MC07",
+...         "category": "magazine",
+...         "status": 0
+...     }
+... ]);
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("663b3ca43b96882debecbeca"),
+                ObjectId("663b3ca43b96882debecbecb"),
+                ObjectId("663b3ca43b96882debecbecc"),
+                ObjectId("663b3ca43b96882debecbecd"),
+                ObjectId("663b3ca43b96882debecbece"),
+                ObjectId("663b3ca43b96882debecbecf"),
+                ObjectId("663b3ca43b96882debecbed0")
+        ]
+}
+**********************************************
+2. List book details which is issued to member “MC01”
+> db.library.find({"member_id": "MC01"});
+{ "_id" : ObjectId("663b3ca43b96882debecbeca"), "book_name" : "Computer Networks", "isbn" : "978-0136108047", "authors" : [ "James F. Kurose", "Keith W. Ross" ], "issue_date" : ISODate("2024-05-01T00:00:00Z"), "return_date" : ISODate("2024-06-01T00:00:00Z"), "price" : 45.99, "member_id" : "MC01", "category" : "textbook", "status" : 1 }
+>      
+*********************************************************************
+3. How many books for “computer network” and “ network security”
+> db.library.count({"category": {"$in": ["computer network", "network security"]}});
+2
+******************************************************************
+4. Update the library document and remove return date field.
+> db.library.updateMany({}, {$unset: {"return_date": ""}});
+{ "acknowledged" : true, "matchedCount" : 7, "modifiedCount" : 7 }
+**********************************************************
+5. List total number of books category wise
+*******************************************************
+6. List all books, which is either textbook or reference book.
+> db.library.find({"category": {"$in": ["textbook", "reference book"]} });
+{ "_id" : ObjectId("663b3ca43b96882debecbeca"), "book_name" : "Computer Networks", "isbn" : "978-0136108047", "authors" : [ "James F. Kurose", "Keith W. Ross" ], "issue_date" : ISODate("2024-05-01T00:00:00Z"), "price" : 45.99, "member_id" : "MC01", "category" : "textbook", "status" : 1 }
+{ "_id" : ObjectId("663b3ca43b96882debecbecd"), "book_name" : "DBMS", "isbn" : "978-0072465631", "authors" : [ "Raghu Ramakrishnan", "Johannes Gehrke" ], "issue_date" : ISODate("2024-05-04T00:00:00Z"), "price" : 55.99, "member_id" : "MC04", "category" : "textbook", "status" : 1 }
+{ "_id" : ObjectId("663b3ca43b96882debecbece"), "book_name" : "Python Programming", "isbn" : "978-1590282755", "authors" : [ "John Zelle" ], "issue_date" : ISODate("2024-05-05T00:00:00Z"), "price" : 29.99, "member_id" : "MC05", "category" : "textbook", "status" : 1 }
+********************************************************************
+7. Sort the document based on price ( book having max price comes first)
+> db.library.find().sort({"price": -1});
+{ "_id" : ObjectId("663b3ca43b96882debecbecd"), "book_name" : "DBMS", "isbn" : "978-0072465631", "authors" : [ "Raghu Ramakrishnan", "Johannes Gehrke" ], "issue_date" : ISODate("2024-05-04T00:00:00Z"), "price" : 55.99, "member_id" : "MC04", "category" : "textbook", "status" : 1 }
+{ "_id" : ObjectId("663b3ca43b96882debecbecc"), "book_name" : "Data Communication", "isbn" : "978-0073376226", "authors" : [ "Behrouz A. Forouzan" ], "issue_date" : ISODate("2024-05-03T00:00:00Z"), "price" : 49.99, "member_id" : "MC03", "category" : "computer network", "status" : 0 }
+{ "_id" : ObjectId("663b3ca43b96882debecbeca"), "book_name" : "Computer Networks", "isbn" : "978-0136108047", "authors" : [ "James F. Kurose", "Keith W. Ross" ], "issue_date" : ISODate("2024-05-01T00:00:00Z"), "price" : 45.99, "member_id" : "MC01", "category" : "textbook", "status" : 1 }
+{ "_id" : ObjectId("663b3ca43b96882debecbecb"), "book_name" : "Network Security", "isbn" : "978-0136108054", "authors" : [ "William Stallings" ], "issue_date" : ISODate("2024-05-02T00:00:00Z"), "price" : 39.99, "member_id" : "MC02", "category" : "network security", "status" : 1 }
+{ "_id" : ObjectId("663b3ca43b96882debecbece"), "book_name" : "Python Programming", "isbn" : "978-1590282755", "authors" : [ "John Zelle" ], "issue_date" : ISODate("2024-05-05T00:00:00Z"), "price" : 29.99, "member_id" : "MC05", "category" : "textbook", "status" : 1 }
+{ "_id" : ObjectId("663b3ca43b96882debecbecf"), "book_name" : "IEEE Transactions", "isbn" : "1548-1336", "authors" : [ "IEEE" ], "issue_date" : ISODate("2024-05-06T00:00:00Z"), "price" : 15.99, "member_id" : "MC06", "category" : "journal", "status" : 0 }
+{ "_id" : ObjectId("663b3ca43b96882debecbed0"), "book_name" : "National Geographic", "isbn" : "NG123456", "authors" : [ "National Geographic Society" ], "issue_date" : ISODate("2024-05-07T00:00:00Z"), "price" : 8.99, "member_id" : "MC07", "category" : "magazine", "status" : 0 }
+***********************************************************************
+8. Count total number of books which is not available for ‘journal’ category
+> db.library.count({"category": "journal", "status": 0});
+1
+***************************************************
+9. Create an index for library collection.
+> db.library.createIndex({"book_name": 1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "ok" : 1
+}
+**************************************************

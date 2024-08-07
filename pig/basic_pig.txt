@@ -1,0 +1,917 @@
+A = LOAD 'hdfs://localhost:9000/pig/s1.txt' USING PigStorage( ',' ) as ( rno:int, Name: chararray, Mobno:chararray, City:chararray );
+dump A;
+*******************************************
+A = LOAD 'hdfs://localhost:9000/pig/s2.csv' USING PigStorage( ',' ) as ( rno:int, Name: chararray, Mobno:chararray, City:chararray );
+dump A;
+------------------------------------------------------------------------------------------
+A = LOAD 'hdfs://localhost:9000/pig/emp.csv' USING PigStorage( ',' ) as ( eno:int, enm: chararray, desg:chararray, age:int, sal:int );
+dump A;
+--------------------------------------------------------------------
+B = filter A by sal>25000;
+dump B;
+
+(1,Rupali,Manager,34,35000)
+(6,Drashti,CEO,35,50000)
+(7,Jenil,Manager,40,45000)
+(9,Nilkanth,HR,45,51000)
+(10,Priyanshi,Emplyoee,28,34000)
+(12,Bhargavi,HR,37,47000)
+(14,Apexa,Clerk,42,26500)
+(15,Rushit,peon,39,30500)
+----------------------------------------------------
+s = filter A by ( enm matches '.*r.*' );
+dump s;
+(3,Krina,Emplyoee,27,10000)
+(6,Drashti,CEO,35,50000)
+(8,Arpit,Clerk,24,20000)
+(10,Priyanshi,Emplyoee,28,34000)
+(12,Bhargavi,HR,37,47000)
+---------------------------------------------------------------------------------------
+B = LIMIT A 3;
+dump B;
+(1,Rupali,Manager,34,35000)
+(2,Axita,Clerk,25,25000)
+(3,Krina,Emplyoee,27,10000)
+------------------------------------------------------------------------------
+B = ORDER A BY enm;
+dump B;
+(14,Apexa,Clerk,42,26500)
+(8,Arpit,Clerk,24,20000)
+(2,Axita,Clerk,25,25000)
+(12,Bhargavi,HR,37,47000)
+(6,Drashti,CEO,35,50000)
+(7,Jenil,Manager,40,45000)
+(5,Jinal,peon,21,20000)
+(11,Khush,peon,35,21000)
+(3,Krina,Emplyoee,27,10000)
+(9,Nilkanth,HR,45,51000)
+(10,Priyanshi,Emplyoee,28,34000)
+(13,Ruchita,Manager,40,24500)
+(1,Rupali,Manager,34,35000)
+(15,Rushit,peon,39,30500)
+(4,Rutva,HR,29,25000)
+
+B = ORDER A BY sal desc;
+dump B;
+(9,Nilkanth,HR,45,51000)
+(6,Drashti,CEO,35,50000)
+(12,Bhargavi,HR,37,47000)
+(7,Jenil,Manager,40,45000)
+(1,Rupali,Manager,34,35000)
+(10,Priyanshi,Emplyoee,28,34000)
+(15,Rushit,peon,39,30500)
+(14,Apexa,Clerk,42,26500)
+(4,Rutva,HR,29,25000)
+(2,Axita,Clerk,25,25000)
+(13,Ruchita,Manager,40,24500)
+(11,Khush,peon,35,21000)
+(5,Jinal,peon,21,20000)
+(8,Arpit,Clerk,24,20000)
+(3,Krina,Emplyoee,27,10000)
+----------------------------------------------------------------------------------------
+foreach :  
+
+B = foreach A generate UPPER( enm ) ;
+dump B;
+
+(RUPALI)
+(AXITA)
+(KRINA)
+(RUTVA)
+(JINAL)
+(DRASHTI)
+(JENIL)
+(ARPIT)
+(NILKANTH)
+(PRIYANSHI)
+(KHUSH)
+(BHARGAVI)
+(RUCHITA)
+(APEXA)
+-----------------------------------------------------------------------------------
+ B = foreach A generate eno,enm ;
+dump B;
+
+(1,Rupali)
+(2,Axita)
+(3,Krina)
+(4,Rutva)
+(5,Jinal)
+(6,Drashti)
+(7,Jenil)
+(8,Arpit)
+(9,Nilkanth)
+(10,Priyanshi)
+(11,Khush)
+(12,Bhargavi)
+(13,Ruchita)
+(14,Apexa)
+(15,Rushit)
+-----------------------------------------------------------------------------------
+
+GROUPING : 
+ 
+D = GROUP A BY desg;
+dump D;
+
+(HR,{(4,Rutva,HR,29,25000),(12,Bhargavi,HR,37,47000),(9,Nilkanth,HR,45,51000)})
+(CEO,{(6,Drashti,CEO,35,50000)})
+(peon,{(15,Rushit,peon,39,30500),(11,Khush,peon,35,21000),(5,Jinal,peon,21,20000)})
+(Clerk,{(8,Arpit,Clerk,24,20000),(14,Apexa,Clerk,42,26500),(2,Axita,Clerk,25,25000)})
+(Manager,{(13,Ruchita,Manager,40,24500),(1,Rupali,Manager,34,35000),(7,Jenil,Manager,40,45000)})
+(Emplyoee,{(10,Priyanshi,Emplyoee,28,34000),(3,Krina,Emplyoee,27,10000)})
+---------------------------------------------------------------------------------------------------
+
+C = UNION A,D;
+dump C;
+
+(HR,{(4,Rutva,HR,29,25000),(12,Bhargavi,HR,37,47000),(9,Nilkanth,HR,45,51000)})
+(CEO,{(6,Drashti,CEO,35,50000)})
+(peon,{(15,Rushit,peon,39,30500),(11,Khush,peon,35,21000),(5,Jinal,peon,21,20000)})
+(Clerk,{(8,Arpit,Clerk,24,20000),(14,Apexa,Clerk,42,26500),(2,Axita,Clerk,25,25000)})
+(Manager,{(13,Ruchita,Manager,40,24500),(1,Rupali,Manager,34,35000),(7,Jenil,Manager,40,45000)})
+(Emplyoee,{(10,Priyanshi,Emplyoee,28,34000),(3,Krina,Emplyoee,27,10000)})
+(1,Rupali,Manager,34,35000)
+(2,Axita,Clerk,25,25000)
+(3,Krina,Emplyoee,27,10000)
+(4,Rutva,HR,29,25000)
+(5,Jinal,peon,21,20000)
+(6,Drashti,CEO,35,50000)
+(7,Jenil,Manager,40,45000)
+(8,Arpit,Clerk,24,20000)
+(9,Nilkanth,HR,45,51000)
+(10,Priyanshi,Emplyoee,28,34000)
+(11,Khush,peon,35,21000)
+(12,Bhargavi,HR,37,47000)
+(13,Ruchita,Manager,40,24500)
+(14,Apexa,Clerk,42,26500)
+(15,Rushit,peon,39,30500)
+------------------------------------------------------------------------------------
+SPLIT A  INTO X if sal<25000, Y if sal>=25000; 
+dump X
+(3,Krina,Emplyoee,27,10000)
+(5,Jinal,peon,21,20000)
+(8,Arpit,Clerk,24,20000)
+(11,Khush,peon,35,21000)
+(13,Ruchita,Manager,40,24500)
+
+
+dump Y;
+(1,Rupali,Manager,34,35000)
+(2,Axita,Clerk,25,25000)
+(4,Rutva,HR,29,25000)
+(6,Drashti,CEO,35,50000)
+(7,Jenil,Manager,40,45000)
+(9,Nilkanth,HR,45,51000)
+(10,Priyanshi,Emplyoee,28,34000)
+(12,Bhargavi,HR,37,47000)
+(14,Apexa,Clerk,42,26500)
+(15,Rushit,peon,39,30500)
+-------------------------------------------------------------------------------------
+Agreegate Function : 
+
+D = GROUP A BY desg;
+C = foreach D generate A.desg,AVG(A.sal);
+dump C;
+({(HR),(HR),(HR)},41000.0)
+({(CEO)},50000.0)
+({(peon),(peon),(peon)},23833.333333333332)
+({(Clerk),(Clerk),(Clerk)},23833.333333333332)
+({(Manager),(Manager),(Manager)},34833.333333333336)
+({(Emplyoee),(Emplyoee)},22000.0)
+-----------------------------------------------------------------------------------------
+D = GROUP A BY desg;
+C = foreach D generate A.desg,MAX(A.sal);
+dump C;
+
+({(HR),(HR),(HR)},51000)
+({(CEO)},50000)
+({(peon),(peon),(peon)},30500)
+({(Clerk),(Clerk),(Clerk)},26500)
+({(Manager),(Manager),(Manager)},45000)
+({(Emplyoee),(Emplyoee)},34000)
+----------------------------------------------------------------------------
+D = GROUP A BY desg;
+C = foreach D generate A.desg,MIN(A.sal);
+dump C;
+
+({(HR),(HR),(HR)},25000)
+({(CEO)},50000)
+({(peon),(peon),(peon)},20000)
+({(Clerk),(Clerk),(Clerk)},20000)
+({(Manager),(Manager),(Manager)},24500)
+({(Emplyoee),(Emplyoee)},10000)
+--------------------------------------------------
+D = GROUP A BY desg;
+C = foreach D generate A.desg,SUM(A.sal);
+dump C;
+({(HR),(HR),(HR)},123000)
+({(CEO)},50000)
+({(peon),(peon),(peon)},71500)
+({(Clerk),(Clerk),(Clerk)},71500)
+({(Manager),(Manager),(Manager)},104500)
+({(Emplyoee),(Emplyoee)},44000)
+-----------------------------------------------------------
+*******************************excersice***********************
+A = LOAD 'hdfs://localhost:9000/pig/menu.csv' USING PigStorage( ',' ) as ( category:chararray, name: chararray, price:int );
+dump A;
+(Kathiyavadi,khichadi,50)
+(Panjabi,Panner Tika,70)
+(Chinese,Haka Noddeles,20)
+(Kathiyavadi,Ras Puri,100)
+(Panjabi,Naan,10)
+(Chinese,Manchurian,50)
+(Kathiyavadi,Thepla,15)
+(Panjabi,Panner Tadka,60)
+(Chinese,fried rice,20)
+(Kathiyavadi,Dhokala,30)
+(Panjabi,Panner Bhurji,40)
+(Chinese,Manchrian rice,50)
+(Kathiyavadi,Fafda Jalebi,60)
+(Panjabi,Palak Panner,70)
+-----------------------------------------------------
+B = filter A by price>30;
+dump B;
+
+(Kathiyavadi,khichadi,50)
+(Panjabi,Panner Tika,70)
+(Kathiyavadi,Ras Puri,100)
+(Chinese,Manchurian,50)
+(Panjabi,Panner Tadka,60)
+(Panjabi,Panner Bhurji,40)
+(Chinese,Manchrian rice,50)
+(Kathiyavadi,Fafda Jalebi,60)
+(Panjabi,Palak Panner,70)
+(Chinese,VegNoodles,45)
+---------------------------------------------------------------------
+s = filter A by ( name matches '.*Panner.*' );
+dump s;
+
+(Panjabi,Panner Tika,70)
+(Panjabi,Panner Tadka,60)
+(Panjabi,Panner Bhurji,40)
+(Panjabi,Palak Panner,70)
+********************************************
+C = ORDER A BY price desc;
+B = LIMIT C 10;
+dump B;
+
+(Kathiyavadi,Ras Puri,100)
+(Panjabi,Panner Tika,70)
+(Panjabi,Palak Panner,70)
+(Kathiyavadi,Fafda Jalebi,60)
+(Panjabi,Panner Tadka,60)
+(Chinese,Manchurian,50)
+(Chinese,Manchrian rice,50)
+(Kathiyavadi,khichadi,50)
+(Chinese,VegNoodles,45)
+(Panjabi,Panner Bhurji,40)
+*************************************************
+D = GROUP A BY category ;
+C = foreach D generate A.category,AVG(A.price);
+dump C;
+({(Chinese),(Chinese),(Chinese),(Chinese),(Chinese)},37.0)
+({(Panjabi),(Panjabi),(Panjabi),(Panjabi),(Panjabi)},50.0)
+({(Kathiyavadi),(Kathiyavadi),(Kathiyavadi),(Kathiyavadi),(Kathiyavadi)},51.0)
+***************************************************************
+D = GROUP A BY category ;
+C = foreach D generate A.category,MAX(A.price);
+dump C;
+({(Chinese),(Chinese),(Chinese),(Chinese),(Chinese)},50)
+({(Panjabi),(Panjabi),(Panjabi),(Panjabi),(Panjabi)},70)
+({(Kathiyavadi),(Kathiyavadi),(Kathiyavadi),(Kathiyavadi),(Kathiyavadi)},100)
+********************************************************************
+g = group A All;
+d = foreach g generate COUNT(A);
+dump d;
+(15)
+*********************************************************************
+k = foreach g GENERATE BagToString(A);
+dump k;
+(Chinese_VegNoodles_45_Panjabi_Palak Panner_70_Kathiyavadi_Fafda Jalebi_60_Chinese_Manchrian rice_50_Panjabi_Panner Bhurji_40_Kathiyavadi_Dhokala_30_Chinese_fried rice_20_Panjabi_Panner Tadka_60_Kathiyavadi_Thepla_15_Chinese_Manchurian_50_Panjabi_Naan_10_Kathiyavadi_Ras Puri_100_Chinese_Haka Noddeles_20_Panjabi_Panner Tika_70_Kathiyavadi_khichadi_50)
+********************************************************
+I = foreach g generate COUNT_STAR(A.name);
+(15)
+**************************************************************
+R = foreach A generate SIZE(enm);
+dump R;
+(6)
+(5)
+(5)
+(5)
+(5)
+(7)
+(5)
+(5)
+(8)
+(9)
+(5)
+(8)
+(7)
+(5)
+(6)
+************************************************************
+A = LOAD 'hdfs://localhost:9000/pig/menu.csv' USING PigStorage( ',' ) as ( category:chararray, name: chararray, price:int );
+B = LOAD 'hdfs://localhost:9000/pig/m1.csv' USING PigStorage( ',' ) as ( category:chararray, name: chararray, price:int );
+cogroup_data = COGROUP A by name, B by name;
+dump cogroup_data;
+
+(Naan,{(Panjabi,Naan,10)},{(Panjabi,Naan,10)})
+(Thepla,{(Kathiyavadi,Thepla,15)},{(Kathiyavadi,Thepla,15)})
+(Dhokala,{(Kathiyavadi,Dhokala,30)},{(Kathiyavadi,Dhokala,30)})
+(Ras Puri,{(Kathiyavadi,Ras Puri,100)},{(Kathiyavadi,Ras Puri,100)})
+(khichadi,{(Kathiyavadi,khichadi,50)},{(Kathiyavadi,khichadi,50)})
+(Manchurian,{(Chinese,Manchurian,50)},{(Chinese,Manchurian,50)})
+(VegNoodles,{(Chinese,VegNoodles,45)},{})
+(fried rice,{(Chinese,fried rice,20)},{(Chinese,fried rice,20)})
+(Panner Tika,{(Panjabi,Panner Tika,70)},{(Panjabi,Panner Tika,70)})
+(Fafda Jalebi,{(Kathiyavadi,Fafda Jalebi,60)},{})
+(Palak Panner,{(Panjabi,Palak Panner,70)},{})
+(Panner Tadka,{(Panjabi,Panner Tadka,60)},{(Panjabi,Panner Tadka,60)})
+(Haka Noddeles,{(Chinese,Haka Noddeles,20)},{(Chinese,Haka Noddeles,20)})
+(Panner Bhurji,{(Panjabi,Panner Bhurji,40)},{})
+(Manchrian rice,{(Chinese,Manchrian rice,50)},{})
+************************************************************************
+t = foreach cogroup_data generate SUBTRACT( A,B );
+dump t;
+
+({})
+({})
+({})
+({})
+({})
+({})
+({(Chinese,VegNoodles,45)})
+({})
+({})
+({(Kathiyavadi,Fafda Jalebi,60)})
+({(Panjabi,Palak Panner,70)})
+({})
+({})
+({(Panjabi,Panner Bhurji,40)})
+({(Chinese,Manchrian rice,50)})
+***********************************************************************
+l = foreach A generate TOTUPLE( category, name, price );
+dump l;
+
+((Kathiyavadi,khichadi,50))
+((Panjabi,Panner Tika,70))
+((Chinese,Haka Noddeles,20))
+((Kathiyavadi,Ras Puri,100))
+((Panjabi,Naan,10))
+((Chinese,Manchurian,50))
+((Kathiyavadi,Thepla,15))
+((Panjabi,Panner Tadka,60))
+((Chinese,fried rice,20))
+((Kathiyavadi,Dhokala,30))
+((Panjabi,Panner Bhurji,40))
+((Chinese,Manchrian rice,50))
+((Kathiyavadi,Fafda Jalebi,60))
+((Panjabi,Palak Panner,70))
+((Chinese,VegNoodles,45))
+**************************************************************************
+g = group A by category; top(2,2,A) first 2 = Number of record 2 = colum number  A = original relation
+l = foreach g{top =TOP(2,2,A); generate top;}
+dump l;
+
+({(Chinese,Manchrian rice,50),(Chinese,Manchurian,50)})
+({(Panjabi,Panner Tika,70),(Panjabi,Palak Panner,70)})
+({(Kathiyavadi,Fafda Jalebi,60),(Kathiyavadi,Ras Puri,100)})
+*******************************************************************
+tk = foreach A generate TOKENIZE(name);
+dump tk;
+({(khichadi)})
+({(Panner),(Tika)})
+({(Haka),(Noddeles)})
+({(Ras),(Puri)})
+({(Naan)})
+({(Manchurian)})
+({(Thepla)})
+({(Panner),(Tadka)})
+({(fried),(rice)})
+({(Dhokala)})
+({(Panner),(Bhurji)})
+({(Manchrian),(rice)})
+({(Fafda),(Jalebi)})
+({(Palak),(Panner)})
+({(VegNoodles)})
+*********************************************************
+self join : - upload the same file multiple times and load it in two diffrent aliais
+equi : which done in with same class;
+outer : unlike inner join outer join return all the from at least one of the relation
+	left outter
+	right outer
+	full outer join
+*******************************************************
+A = LOAD 'hdfs://localhost:9000/pig/emp.csv' USING PigStorage( ',' ) as ( eno:int, enm: chararray, desg:chararray, age:int, sal:int );
+
+B = LOAD 'hdfs://localhost:9000/pig/dept.csv' USING PigStorage( ',' ) as ( eno:int, dno:int, dnm: chararray );
+
+(1,Rupali,Manager,34,35000)
+(2,Axita,Clerk,25,25000)
+(3,Krina,Emplyoee,27,10000)
+(4,Rutva,HR,29,25000)
+(5,Jinal,peon,21,20000)
+(6,Drashti,CEO,35,50000)
+(7,Jenil,Manager,40,45000)
+(8,Arpit,Clerk,24,20000)
+(9,Nilkanth,HR,45,51000)
+(10,Priyanshi,Emplyoee,28,34000)
+(11,Khush,peon,35,21000)
+(12,Bhargavi,HR,37,47000)
+(13,Ruchita,Manager,40,24500)
+(14,Apexa,Clerk,42,26500)
+(15,Rushit,peon,39,30500)
+
+(1,101,MCA)
+(2,102,MBA)
+(3,103,Msc)
+(4,104,Account)
+(5,105,Project)
+(6,101,MCA)
+(7,102,MBA)
+(8,103,Msc)
+(9,104,Account)
+(10,105,Project)
+(11,101,MCA)
+(12,102,MBA)
+(13,103,Msc)
+(14,104,Account)
+(15,105,Project)
+********************************************************************
+c = JOIN A BY eno, B BY eno;
+dump c;
+
+(1,Rupali,Manager,34,35000,1,101,MCA)
+(2,Axita,Clerk,25,25000,2,102,MBA)
+(3,Krina,Emplyoee,27,10000,3,103,Msc)
+(4,Rutva,HR,29,25000,4,104,Account)
+(5,Jinal,peon,21,20000,5,105,Project)
+(6,Drashti,CEO,35,50000,6,101,MCA)
+(7,Jenil,Manager,40,45000,7,102,MBA)
+(8,Arpit,Clerk,24,20000,8,103,Msc)
+(9,Nilkanth,HR,45,51000,9,104,Account)
+(10,Priyanshi,Emplyoee,28,34000,10,105,Project)
+(11,Khush,peon,35,21000,11,101,MCA)
+(12,Bhargavi,HR,37,47000,12,102,MBA)
+(13,Ruchita,Manager,40,24500,13,103,Msc)
+(14,Apexa,Clerk,42,26500,14,104,Account)
+(15,Rushit,peon,39,30500,15,105,Project)
+************************************************************************
+
+line = LOAD 'hdfs://localhost:9000/pig/wc.txt' AS ( line:chararray );
+w = foreach line generate FLATTEN(TOKENIZE(line)) AS word;
+g = GROUP w BY word;
+wc = foreach g generate group, COUNT(w);
+dump wc; 
+(g,1)
+(j,1)
+(l,1)
+(in,1)
+(it,1)
+(to,1)
+(are,1)
+(big,1)
+(how,1)
+(mca,1)
+(pig,1)
+(you,1)
+(data,1)
+(noon,1)
+(this,1)
+(tool,1)
+(hello,1)
+(haddop,1)
+(hadoop,1)
+(welcome,1)
+(didvision,1)
+(university,1)
+*-**********************************************************************
+
+
+line = LOAD 'd:/pig/wc.txt' AS ( line:chararray );
+w = foreach line generate FLATTEN(TOKENIZE(line)) AS word;
+g = GROUP w BY word;
+wc = foreach g generate group, COUNT(w);
+dump wc; 
+(g,1)
+(j,1)
+(l,1)
+(in,1)
+(it,1)
+(to,1)
+(are,2)
+(big,1)
+(how,1)
+(mca,1)
+(pig,1)
+(you,1)
+(data,1)
+(noon,1)
+(this,1)
+(tool,1)
+(hello,1)
+(hadoop,2)
+(welcome,1)
+(didvision,1)
+(university,1)
+***************************************************************
+t = foreach A generate enm, STARTSWITH( enm,'R' );
+dump t;
+(Rupali,true)
+(Axita,false)
+(Krina,false)
+(Rutva,true)
+(Jinal,false)
+(Drashti,false)
+(Jenil,false)
+(Arpit,false)
+(Nilkanth,false)
+(Priyanshi,false)
+(Khush,false)
+(Bhargavi,false)
+(Ruchita,true)
+(Apexa,false)
+(Rushit,true)
+*************************************************************************
+t = foreach A generate enm, ENDSWITH( enm,'i' );
+dump t;
+(Rupali,true)
+(Axita,false)
+(Krina,false)
+(Rutva,false)
+(Jinal,false)
+(Drashti,true)
+(Jenil,false)
+(Arpit,false)
+(Nilkanth,false)
+(Priyanshi,true)
+(Khush,false)
+(Bhargavi,true)
+(Ruchita,false)
+(Apexa,false)
+(Rushit,false)
+************************************************************************
+t = foreach A generate (eno,enm), EqualsIgnoreCase( enm,'Rushit' );
+dump t;
+
+((1,Rupali),false)
+((2,Axita),false)
+((3,Krina),false)
+((4,Rutva),false)
+((5,Jinal),false)
+((6,Drashti),false)
+((7,Jenil),false)
+((8,Arpit),false)
+((9,Nilkanth),false)
+((10,Priyanshi),false)
+((11,Khush),false)
+((12,Bhargavi),false)
+((13,Ruchita),false)
+((14,Apexa),false)
+((15,Rushit),true)
+**************************************************************
+substr = foreach A generate (eno,enm), SUBSTRING(enm, 0, 2);
+dump substr;
+
+((1,Rupali),Ru)
+((2,Axita),Ax)
+((3,Krina),Kr)
+((4,Rutva),Ru)
+((5,Jinal),Ji)
+((6,Drashti),Dr)
+((7,Jenil),Je)
+((8,Arpit),Ar)
+((9,Nilkanth),Ni)
+((10,Priyanshi),Pr)
+((11,Khush),Kh)
+((12,Bhargavi),Bh)
+((13,Ruchita),Ru)
+((14,Apexa),Ap)
+((15,Rushit),Ru)
+****************************************************************
+ind = foreach A generate (eno,enm), INDEXOF(enm, 'r', 0);
+dump ind;
+((1,Rupali),-1)
+((2,Axita),-1)
+((3,Krina),1)
+((4,Rutva),-1)
+((5,Jinal),-1)
+((6,Drashti),1)
+((7,Jenil),-1)
+((8,Arpit),1)
+((9,Nilkanth),-1)
+((10,Priyanshi),1)
+((11,Khush),-1)
+((12,Bhargavi),3)
+((13,Ruchita),-1)
+((14,Apexa),-1)
+((15,Rushit),-1)
+******************************************************************
+lin = foreach A generate (eno,enm), LAST_INDEX_OF(enm, 'a');
+dump lin;
+
+((1,Rupali),3)
+((2,Axita),4)
+((3,Krina),4)
+((4,Rutva),4)
+((5,Jinal),3)
+((6,Drashti),2)
+((7,Jenil),-1)
+((8,Arpit),-1)
+((9,Nilkanth),4)
+((10,Priyanshi),4)
+((11,Khush),-1)
+((12,Bhargavi),5)
+((13,Ruchita),6)
+((14,Apexa),4)
+((15,Rushit),-1)
+***********************************************************
+lcf = foreach A generate (eno,enm), LCFIRST(enm);
+dump lcf;
+((1,Rupali),rupali)
+((2,Axita),axita)
+((3,Krina),krina)
+((4,Rutva),rutva)
+((5,Jinal),jinal)
+((6,Drashti),drashti)
+((7,Jenil),jenil)
+((8,Arpit),arpit)
+((9,Nilkanth),nilkanth)
+((10,Priyanshi),priyanshi)
+((11,Khush),khush)
+((12,Bhargavi),bhargavi)
+((13,Ruchita),ruchita)
+((14,Apexa),apexa)
+((15,Rushit),rushit)
+******************************************************
+ucf = foreach A generate (eno,enm), UCFIRST(enm);
+dump ucf;
+*******************************************************************
+upper = foreach A generate (eno,enm), UPPER(enm);
+dump upper;
+((1,Rupali),Rupali)
+((2,Axita),Axita)
+((3,Krina),Krina)
+((4,Rutva),Rutva)
+((5,Jinal),Jinal)
+((6,Drashti),Drashti)
+((7,Jenil),Jenil)
+((8,Arpit),Arpit)
+((9,Nilkanth),Nilkanth)
+((10,Priyanshi),Priyanshi)
+((11,Khush),Khush)
+((12,Bhargavi),Bhargavi)
+((13,Ruchita),Ruchita)
+((14,Apexa),Apexa)
+((15,Rushit),Rushit)
+******************************************************
+rp = foreach A generate (eno,desg), REPLACE( desg, 'Manager', 'Man' );
+dump rp;
+((1,Manager),Man)
+((2,Clerk),Clerk)
+((3,Emplyoee),Emplyoee)
+((4,HR),HR)
+((5,peon),peon)
+((6,CEO),CEO)
+((7,Manager),Man)
+((8,Clerk),Clerk)
+((9,HR),HR)
+((10,Emplyoee),Emplyoee)
+((11,peon),peon)
+((12,HR),HR)
+((13,Manager),Man)
+((14,Clerk),Clerk)
+((15,peon),peon)
+************************************************************
+stto = foreach A generate (eno,enm), STRSPLITTOBAG ( enm, '_', 2 );
+dump stto;
+
+((1,Rupali),{(Rupali)})
+((2,Axita),{(Axita)})
+((3,Krina),{(Krina)})
+((4,Rutva),{(Rutva)})
+((5,Jinal),{(Jinal)})
+((6,Drashti),{(Drashti)})
+((7,Jenil),{(Jenil)})
+((8,Arpit),{(Arpit)})
+((9,Nilkanth),{(Nilkanth)})
+((10,Priyanshi),{(Priyanshi)})
+((11,Khush),{(Khush)})
+((12,Bhargavi),{(Bhargavi)})
+((13,Ruchita),{(Ruchita)})
+((14,Apexa),{(Apexa)})
+((15,Rushit),{(Rushit)})
+*******************************************************************
+A = LOAD 'hdfs://localhost:9000/pig/emp.csv' USING PigStorage( ',' ) as ( eno:int, enm: chararray, desg:chararray, age:int, sal:int, dob:chararray );
+
+dt = foreach A generate ToDate(dob, 'dd/MM/yyyy') as (date_time:DateTime);
+ct = foreach dt generate CurrentTime();
+dump ct;
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+(2024-05-25T12:25:35.534+05:30)
+******************************************************
+dt = foreach A generate ToDate(dob, 'dd/MM/yyyy') as (date_time:DateTime);
+gm = foreach dt generate (date_time),GetMonth(date_time);
+dump gm;
+(2003-02-22T00:00:00.000+05:30,2)
+(2001-07-15T00:00:00.000+05:30,7)
+(2002-08-05T00:00:00.000+05:30,8)
+(2003-04-27T00:00:00.000+05:30,4)
+(2002-11-12T00:00:00.000+05:30,11)
+(2003-04-01T00:00:00.000+05:30,4)
+(2005-11-08T00:00:00.000+05:30,11)
+(2003-03-08T00:00:00.000+05:30,3)
+(2004-10-31T00:00:00.000+05:30,10)
+(2003-02-20T00:00:00.000+05:30,2)
+(2006-05-05T00:00:00.000+05:30,5)
+(1990-09-06T00:00:00.000+05:30,9)
+(2000-02-25T00:00:00.000+05:30,2)
+(1998-01-31T00:00:00.000+05:30,1)
+(1997-01-11T00:00:00.000+05:30,1)
+*************************************************************************
+gd = foreach dt generate (date_time),GetDay(date_time);
+dump gd;
+(2003-02-22T00:00:00.000+05:30,22)
+(2001-07-15T00:00:00.000+05:30,15)
+(2002-08-05T00:00:00.000+05:30,5)
+(2003-04-27T00:00:00.000+05:30,27)
+(2002-11-12T00:00:00.000+05:30,12)
+(2003-04-01T00:00:00.000+05:30,1)
+(2005-11-08T00:00:00.000+05:30,8)
+(2003-03-08T00:00:00.000+05:30,8)
+(2004-10-31T00:00:00.000+05:30,31)
+(2003-02-20T00:00:00.000+05:30,20)
+(2006-05-05T00:00:00.000+05:30,5)
+(1990-09-06T00:00:00.000+05:30,6)
+(2000-02-25T00:00:00.000+05:30,25)
+(1998-01-31T00:00:00.000+05:30,31)
+(1997-01-11T00:00:00.000+05:30,11)
+***********************************************************
+gh = foreach dt generate (date_time),GetHour(date_time);
+dump gh;
+(2003-02-22T00:00:00.000+05:30,0)
+(2001-07-15T00:00:00.000+05:30,0)
+(2002-08-05T00:00:00.000+05:30,0)
+(2003-04-27T00:00:00.000+05:30,0)
+(2002-11-12T00:00:00.000+05:30,0)
+(2003-04-01T00:00:00.000+05:30,0)
+(2005-11-08T00:00:00.000+05:30,0)
+(2003-03-08T00:00:00.000+05:30,0)
+(2004-10-31T00:00:00.000+05:30,0)
+(2003-02-20T00:00:00.000+05:30,0)
+(2006-05-05T00:00:00.000+05:30,0)
+(1990-09-06T00:00:00.000+05:30,0)
+(2000-02-25T00:00:00.000+05:30,0)
+(1998-01-31T00:00:00.000+05:30,0)
+(1997-01-11T00:00:00.000+05:30,0)
+*******************************************************
+gmil = foreach dt generate (date_time),GetMilliSecond(date_time);
+dump gmil;
+(2003-02-22T00:00:00.000+05:30,0)
+(2001-07-15T00:00:00.000+05:30,0)
+(2002-08-05T00:00:00.000+05:30,0)
+(2003-04-27T00:00:00.000+05:30,0)
+(2002-11-12T00:00:00.000+05:30,0)
+(2003-04-01T00:00:00.000+05:30,0)
+(2005-11-08T00:00:00.000+05:30,0)
+(2003-03-08T00:00:00.000+05:30,0)
+(2004-10-31T00:00:00.000+05:30,0)
+(2003-02-20T00:00:00.000+05:30,0)
+(2006-05-05T00:00:00.000+05:30,0)
+(1990-09-06T00:00:00.000+05:30,0)
+(2000-02-25T00:00:00.000+05:30,0)
+(1998-01-31T00:00:00.000+05:30,0)
+(1997-01-11T00:00:00.000+05:30,0)
+********************************************
+gmin = foreach dt generate (date_time),GetMinute(date_time);
+dump gmin;
+*********************************************
+gs = foreach dt generate (date_time),GetSecond(date_time);
+dump gs;
+(2003-02-22T00:00:00.000+05:30,0)
+(2001-07-15T00:00:00.000+05:30,0)
+(2002-08-05T00:00:00.000+05:30,0)
+(2003-04-27T00:00:00.000+05:30,0)
+(2002-11-12T00:00:00.000+05:30,0)
+(2003-04-01T00:00:00.000+05:30,0)
+(2005-11-08T00:00:00.000+05:30,0)
+(2003-03-08T00:00:00.000+05:30,0)
+(2004-10-31T00:00:00.000+05:30,0)
+(2003-02-20T00:00:00.000+05:30,0)
+(2006-05-05T00:00:00.000+05:30,0)
+(1990-09-06T00:00:00.000+05:30,0)
+(2000-02-25T00:00:00.000+05:30,0)
+(1998-01-31T00:00:00.000+05:30,0)
+(1997-01-11T00:00:00.000+05:30,0)
+**************************************************
+gw = foreach dt generate (date_time),GetWeek(date_time);
+dump gw;
+(2003-02-22T00:00:00.000+05:30,8)
+(2001-07-15T00:00:00.000+05:30,28)
+(2002-08-05T00:00:00.000+05:30,32)
+(2003-04-27T00:00:00.000+05:30,17)
+(2002-11-12T00:00:00.000+05:30,46)
+(2003-04-01T00:00:00.000+05:30,14)
+(2005-11-08T00:00:00.000+05:30,45)
+(2003-03-08T00:00:00.000+05:30,10)
+(2004-10-31T00:00:00.000+05:30,44)
+(2003-02-20T00:00:00.000+05:30,8)
+(2006-05-05T00:00:00.000+05:30,18)
+(1990-09-06T00:00:00.000+05:30,36)
+(2000-02-25T00:00:00.000+05:30,8)
+(1998-01-31T00:00:00.000+05:30,5)
+(1997-01-11T00:00:00.000+05:30,2)
+**************************************************
+gwy = foreach dt generate (date_time),GetWeekYear(date_time);
+dump gwy;
+(2003-02-22T00:00:00.000+05:30,2003)
+(2001-07-15T00:00:00.000+05:30,2001)
+(2002-08-05T00:00:00.000+05:30,2002)
+(2003-04-27T00:00:00.000+05:30,2003)
+(2002-11-12T00:00:00.000+05:30,2002)
+(2003-04-01T00:00:00.000+05:30,2003)
+(2005-11-08T00:00:00.000+05:30,2005)
+(2003-03-08T00:00:00.000+05:30,2003)
+(2004-10-31T00:00:00.000+05:30,2004)
+(2003-02-20T00:00:00.000+05:30,2003)
+(2006-05-05T00:00:00.000+05:30,2006)
+(1990-09-06T00:00:00.000+05:30,1990)
+(2000-02-25T00:00:00.000+05:30,2000)
+(1998-01-31T00:00:00.000+05:30,1998)
+(1997-01-11T00:00:00.000+05:30,1997)
+******************************************************
+gy = foreach dt generate (date_time),GetYear(date_time);
+dump gy;
+(2003-02-22T00:00:00.000+05:30,2003)
+(2001-07-15T00:00:00.000+05:30,2001)
+(2002-08-05T00:00:00.000+05:30,2002)
+(2003-04-27T00:00:00.000+05:30,2003)
+(2002-11-12T00:00:00.000+05:30,2002)
+(2003-04-01T00:00:00.000+05:30,2003)
+(2005-11-08T00:00:00.000+05:30,2005)
+(2003-03-08T00:00:00.000+05:30,2003)
+(2004-10-31T00:00:00.000+05:30,2004)
+(2003-02-20T00:00:00.000+05:30,2003)
+(2006-05-05T00:00:00.000+05:30,2006)
+(1990-09-06T00:00:00.000+05:30,1990)
+(2000-02-25T00:00:00.000+05:30,2000)
+(1998-01-31T00:00:00.000+05:30,1998)
+(1997-01-11T00:00:00.000+05:30,1997)
+***********************************************
+ad = foreach dt generate (date_time),AddDuration(date_time, 'P1M');
+dump ad;
+(2003-02-22T00:00:00.000+05:30,2003-03-22T00:00:00.000+05:30)
+(2001-07-15T00:00:00.000+05:30,2001-08-15T00:00:00.000+05:30)
+(2002-08-05T00:00:00.000+05:30,2002-09-05T00:00:00.000+05:30)
+(2003-04-27T00:00:00.000+05:30,2003-05-27T00:00:00.000+05:30)
+(2002-11-12T00:00:00.000+05:30,2002-12-12T00:00:00.000+05:30)
+(2003-04-01T00:00:00.000+05:30,2003-05-01T00:00:00.000+05:30)
+(2005-11-08T00:00:00.000+05:30,2005-12-08T00:00:00.000+05:30)
+(2003-03-08T00:00:00.000+05:30,2003-04-08T00:00:00.000+05:30)
+(2004-10-31T00:00:00.000+05:30,2004-11-30T00:00:00.000+05:30)
+(2003-02-20T00:00:00.000+05:30,2003-03-20T00:00:00.000+05:30)
+(2006-05-05T00:00:00.000+05:30,2006-06-05T00:00:00.000+05:30)
+(1990-09-06T00:00:00.000+05:30,1990-10-06T00:00:00.000+05:30)
+(2000-02-25T00:00:00.000+05:30,2000-03-25T00:00:00.000+05:30)
+(1998-01-31T00:00:00.000+05:30,1998-02-28T00:00:00.000+05:30)
+(1997-01-11T00:00:00.000+05:30,1997-02-11T00:00:00.000+05:30)
+***************************************************************
+sd = foreach dt generate (date_time),SubtractDuration(date_time, 'P1M');
+dump sd;
+(2003-02-22T00:00:00.000+05:30,2003-01-22T00:00:00.000+05:30)
+(2001-07-15T00:00:00.000+05:30,2001-06-15T00:00:00.000+05:30)
+(2002-08-05T00:00:00.000+05:30,2002-07-05T00:00:00.000+05:30)
+(2003-04-27T00:00:00.000+05:30,2003-03-27T00:00:00.000+05:30)
+(2002-11-12T00:00:00.000+05:30,2002-10-12T00:00:00.000+05:30)
+(2003-04-01T00:00:00.000+05:30,2003-03-01T00:00:00.000+05:30)
+(2005-11-08T00:00:00.000+05:30,2005-10-08T00:00:00.000+05:30)
+(2003-03-08T00:00:00.000+05:30,2003-02-08T00:00:00.000+05:30)
+(2004-10-31T00:00:00.000+05:30,2004-09-30T00:00:00.000+05:30)
+(2003-02-20T00:00:00.000+05:30,2003-01-20T00:00:00.000+05:30)
+(2006-05-05T00:00:00.000+05:30,2006-04-05T00:00:00.000+05:30)
+(1990-09-06T00:00:00.000+05:30,1990-08-06T00:00:00.000+05:30)
+(2000-02-25T00:00:00.000+05:30,2000-01-25T00:00:00.000+05:30)
+(1998-01-31T00:00:00.000+05:30,1997-12-31T00:00:00.000+05:30)
+(1997-01-11T00:00:00.000+05:30,1996-12-11T00:00:00.000+05:30)
+*********************************************************************
+store A into 'hdfs://localhost:9000/pig/e1.txt';
+to store output in file
+*********************************************************************
+
+
+
+

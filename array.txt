@@ -1,0 +1,239 @@
+> db.food.insertMany([{_id:1,fruits:['pine apple','Cherry','Black Berry']},{_id:2,fruits:['orange','jackfruit','mango']},{_id:3,fruits:['pear','mango','grapes','jackfruit']},{_id:4,fruits:['banana','strawberry','grapes']},{_id:5,fruits:['orange','grapes']}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5 ] }
+******************************************************************
+> db.food.find()
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry", "Black Berry" ] }
+{ "_id" : 2, "fruits" : [ "orange", "jackfruit", "mango" ] }
+{ "_id" : 3, "friits" : [ "pear", "mango", "grapes", "jackfruit" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ] }
+> db.food.find({})
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry", "Black Berry" ] }
+{ "_id" : 2, "fruits" : [ "orange", "jackfruit", "mango" ] }
+{ "_id" : 3, "friits" : [ "pear", "mango", "grapes", "jackfruit" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ] }
+*********************************************************************************
+> db.food.find({fruits:'banana'})
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+************************************************************
+> db.food.find({fruits:'grapes'})
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ] }
+***********************************************************
+> db.food.update({_id:3},{$addToSet:{fruits:'mango'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.food.find({})
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry", "Black Berry" ] }
+{ "_id" : 2, "fruits" : [ "orange", "jackfruit", "mango" ] }
+{ "_id" : 3, "friits" : [ "pear", "mango", "grapes", "jackfruit" ], "fruits" : [ "mango" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ] }
+***************************************************************
+> db.food.update({_id:3},{$addToSet:{friits:'mango'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+*******************************************
+> db.food.update({_id:3},{$addToSet:{friits:'orange'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.food.find({})
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry", "Black Berry" ] }
+{ "_id" : 2, "fruits" : [ "orange", "jackfruit", "mango" ] }
+{ "_id" : 3, "friits" : [ "pear", "mango", "grapes", "jackfruit", "orange" ], "fruits" : [ "mango" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ] }
+*********************************************************
+> db.food.update({_id:3},{$push:{friits:{$each:['orange'],$position:0}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.food.find({})
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry", "Black Berry" ] }
+{ "_id" : 2, "fruits" : [ "orange", "jackfruit", "mango" ] }
+{ "_id" : 3, "friits" : [ "orange", "pear", "mango", "grapes", "jackfruit", "orange" ], "fruits" : [ "mango" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ] }
+*****************************************************
+> db.food.update({},{$push:{fruits:{$each:['jack'],$position:0}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+************************************************************
+> db.food.update({},{$push:{fruits:{$each:['jitafal'],$position:0}}},{multi:true})
+WriteResult({ "nMatched" : 5, "nUpserted" : 0, "nModified" : 5 })
+************************************************************************
+> db.food.update({_id:3},{$pull:{friits:'orange'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+*****************************************************************
+> db.food.update({_id:3},{$pull:{friits:'orange'}},{multi:true})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+************************************************************
+> db.food.update({_id:3},{$pop:{friits:1}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+******************************************************
+> db.food.update({_id:3},{$pop:{friits:-1}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+**************************************************************************************
+> db.food.update({},{$push:{fruits:{$each:['papaya'],$position:0}}},{multi:true})
+WriteResult({ "nMatched" : 5, "nUpserted" : 0, "nModified" : 5 })
+*********************************************************************
+> db.food.updateMany({},{$pull:{fruits:'papaya'}})
+{ "acknowledged" : true, "matchedCount" : 5, "modifiedCount" : 5 }
+*******************************************************************************
+> db.food.find({fruits:{$size:2}})  -return size of element
+{ "_id" : 5, "fruits" : [ "orange", "grapes" ], "friits" : [ "jitafal" ] }
+*************************************************
+> db.food.find({_id:1},{fruits:{$slice:2}}) -slice the array
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry" ], "friits" : [ "jitafal", "jack" ] }
+**********************************************************************************
+> db.food.find({_id:1},{fruits:{$slice:[0,2]}})
+{ "_id" : 1, "fruits" : [ "pine apple", "Cherry" ], "friits" : [ "jitafal", "jack" ] }
+******************************************************************
+> db.food.find({_id:3},{friits:{$slice:[1,3]}})
+{ "_id" : 3, "friits" : [ "mango", "grapes" ], "fruits" : [ "mango" ] }
+************************************************************************************
+> db.food.update({_id:3},{$set:{'fruits.1':'mango'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+*****************************************************************************
+> db.food.update({_id:4,fruits:'banana'},{$set:{'fruits.$':'Sitafal'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+********************************************************************
+*****************************************SET : - 2 *********************************
+> db.food.insertMany([{_id:1,fruits:['pine apple','Cherry','Black Berry']},{_id:2,fruits:['orange','jackfruit','mango']},{_id:3,fruits:['banana','coconut','grapes','jackfruit']},{_id:4,fruits:['banana','strawberry','grapes']},{_id:5,fruits:['orange','grapes']}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5 ] }
+*************************************************************
+> db.food.find({fruits:'banana'})
+{ "_id" : 3, "fruits" : [ "banana", "coconut", "grapes", "jackfruit" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+***********************************************************************
+> db.food.find({fruits:['banana','coconut','grapes']})
+{ "_id" : 3, "fruits" : [ "banana", "coconut", "grapes"]}
+****************************************************************
+> db.food.find({fruits:{$all:['banana','grapes']}})
+{ "_id" : 3, "fruits" : [ "banana", "coconut", "grapes", "jackfruit" ] }
+{ "_id" : 4, "fruits" : [ "banana", "strawberry", "grapes" ] }
+*****************************************************************
+> db.food.find({'fruits.1':'coconut'})
+{ "_id" : 3, "fruits" : [ "banana", "coconut", "grapes", "jackfruit" ] }
+***********************************************************************
+> db.food.find({'fruits.2':'mango'})
+{ "_id" : 2, "fruits" : [ "orange", "jackfruit", "mango" ] }
+***************************************************************************
+*************************************SET : - 3***************************************
+db.users.insertMany([
+{_id:1,Name:'Alice',skill:['javascript','python','mongodb','node.js']},
+{_id:2,Name:'Bob',skill:['java','c++','python','ruby']},
+{_id:3,Name:'Charlie',skill:['c#','java','python','javascript']},
+{_id:4,Name:'David',skill:['php','javascript','python','ruby']},
+{_id:5,Name:'Eve',skill:['ruby','python','java','c#']},
+{_id:6,Name:'Frank',skill:['javascript','c++','python','php']},
+{_id:7,Name:'Grace',skill:['java','python','ruby','javascript']},
+{_id:8,Name:'Helen',skill:['python','c++','java','php']},
+{_id:9,Name:'Ivy',skill:['javascript','python','ruby','c#']},
+{_id:10,Name:'Jack',skill:['c++','java','python','javascript']},
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+        ]
+}
+********************************************************
+> db.users.updateOne({_id:1},{'$unset':{"skill.2":1}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+************************************************************
+> db.users.updateMany({},{'$pull':{skill:'java'}})
+{ "acknowledged" : true, "matchedCount" : 10, "modifiedCount" : 6 }
+****************************************************************************************
+> db.users.updateOne({_id:2},{'$push':{"skill":"SQL"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.users.find()
+{ "_id" : 1, "Name" : "Alice", "skill" : [ "javascript", "python", null, "node.js" ] }
+{ "_id" : 2, "Name" : "Bob", "skill" : [ "c++", "python", "ruby", "SQL" ] }
+{ "_id" : 3, "Name" : "Charlie", "skill" : [ "c#", "python", "javascript" ] }
+{ "_id" : 4, "Name" : "David", "skill" : [ "php", "javascript", "python", "ruby" ] }
+{ "_id" : 5, "Name" : "Eve", "skill" : [ "ruby", "python", "c#" ] }
+{ "_id" : 6, "Name" : "Frank", "skill" : [ "javascript", "c++", "python", "php" ] }
+{ "_id" : 7, "Name" : "Grace", "skill" : [ "python", "ruby", "javascript" ] }
+{ "_id" : 8, "Name" : "Helen", "skill" : [ "python", "c++", "php" ] }
+{ "_id" : 9, "Name" : "Ivy", "skill" : [ "javascript", "python", "ruby", "c#" ] }
+{ "_id" : 10, "Name" : "Jack", "skill" : [ "c++", "python", "javascript" ] }
+************************************************************************
+> db.users.find({skill:'javascript'})
+{ "_id" : 1, "Name" : "Alice", "skill" : [ "javascript", "python", null, "node.js" ] }
+{ "_id" : 3, "Name" : "Charlie", "skill" : [ "c#", "python", "javascript" ] }
+{ "_id" : 4, "Name" : "David", "skill" : [ "php", "javascript", "python", "ruby" ] }
+{ "_id" : 6, "Name" : "Frank", "skill" : [ "javascript", "c++", "python", "php" ] }
+{ "_id" : 7, "Name" : "Grace", "skill" : [ "python", "ruby", "javascript" ] }
+{ "_id" : 9, "Name" : "Ivy", "skill" : [ "javascript", "python", "ruby", "c#" ] }
+{ "_id" : 10, "Name" : "Jack", "skill" : [ "c++", "python", "javascript" ] }
+*****************************************************************
+***************************************set : - 4 ******************************
+> db.employees.insertMany([
+... ...     {  _id:1,firstName: "John",lastName: "King",email: "john.king@abc.com",salary: 5000,skill:['Angular','React','MongoDB']},
+... ...     {  _id:2,firstName: "Sachin",lastName: "T",email: "sachin.t@abc.com",salary: 8000,skill:['Accountin','Tax']},
+... ...     {   _id:3,firstName: "James", lastName: "Bond",email: "jamesb@abc.com",salary: 7500,skill:['Sales','Marketing']},
+... ...     {  _id:4,firstName: "Steve",lastName: "J",email: "steve.j@abc.com",salary: 7000,skill:['Mac','Marketing','Product Design']},
+... ...     {  _id:5,firstName: "Kapil",lastName: "D",email: "kapil.d@abc.com",salary: 4500,skill:['Accountin','Tax','Sales']},
+... ...     {  _id:6,firstName: "Amitabh",lastName: "B",email: "amitabh.b@abc.com",salary: 7000,skill:['Marketing','Tax']}
+... ... ])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5, 6 ] }
+> db.employees.find()
+{ "_id" : 1, "firstName" : "John", "lastName" : "King", "email" : "john.king@abc.com", "salary" : 5000, "skill" : [ "Angular", "React", "MongoDB" ] }
+{ "_id" : 2, "firstName" : "Sachin", "lastName" : "T", "email" : "sachin.t@abc.com", "salary" : 8000, "skill" : [ "Accountin", "Tax" ] }
+{ "_id" : 3, "firstName" : "James", "lastName" : "Bond", "email" : "jamesb@abc.com", "salary" : 7500, "skill" : [ "Sales", "Marketing" ] }
+{ "_id" : 4, "firstName" : "Steve", "lastName" : "J", "email" : "steve.j@abc.com", "salary" : 7000, "skill" : [ "Mac", "Marketing", "Product Design" ] }
+{ "_id" : 5, "firstName" : "Kapil", "lastName" : "D", "email" : "kapil.d@abc.com", "salary" : 4500, "skill" : [ "Accountin", "Tax", "Sales" ] }
+{ "_id" : 6, "firstName" : "Amitabh", "lastName" : "B", "email" : "amitabh.b@abc.com", "salary" : 7000, "skill" : [ "Marketing", "Tax" ] }
+*******************************************************************************************
+> db.employees.updateMany({_id:5},{$set:{skill:['Sales Tax']}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.employees.find({_id:5})
+{ "_id" : 5, "firstName" : "Kapil", "lastName" : "D", "email" : "kapil.d@abc.com", "salary" : 4500, "skill" : [ "Sales Tax" ] }
+*****************************************************
+> db.employees.updateMany({skill:'Marketing'},{$set:{'skill.$':'Public Speaking'}})
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+***********************************************************************
+> db.employees.updateMany({},{$push:{skill:'Sport'}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+> db.employees.updateMany({_id:3},{$push:{skill:'Sport'}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+*********************************************************************************
+> db.employees.updateMany({},{$push:{skill:{$each:['spots','acting']}}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+***************************************************************************
+> db.employees.updateMany({},{$addToSet:{skill:'GST'}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+******************************************************
+> db.employees.updateMany({},{$pop:{skill:1}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+> db.employees.updateMany({},{$pop:{skill:-1}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+> db.employees.updateMany({},{$pull:{skill:'GST'}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 0 }
+***********************************************************************
+********************************************************************************
+db.inventoy.insertMany([
+{item:'journal',qty:25,tag:['blank','red'],dim_cm:[14,21]},
+{item:'notebook',qty:50,tag:['red','blank'],dim_cm:[14,21]},
+{item:'paper',qty:100,tag:['red','blank','plain'],dim_cm:[14,21]},
+{item:'planner',qty:75,tag:['blank','red'],dim_cm:[22.85,30]},
+{item:'postcard',qty:45,tag:['blue'],dim_cm:[10,15.25]}
+])
+
+
+
+
+
+
+
+
+
+
+
+
+

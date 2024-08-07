@@ -1,0 +1,172 @@
+>show dbs  //show Data base
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use blog //create database
+switched to db blog
+> db  // show current database
+blog
+> db.createCollection('posts') //create table
+{ "ok" : 1 }
+> db.post1.insert({"title":"data1"})  //create collection and insert one value
+WriteResult({ "nInserted" : 1 })
+> db.posts.insertOne({"title":"Post 1"})  //inser the record
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("6630b70df088a8f3f2197c51")
+}
+> db.posts.insertMany([{"title":"Post 2"},{"title":"Post 3"},{"title":"Post 4"}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6630b892f088a8f3f2197c52"),
+                ObjectId("6630b892f088a8f3f2197c53"),
+                ObjectId("6630b892f088a8f3f2197c54")
+        ]
+}  // insert many record....
+> db.posts.find()   // show table
+{ "_id" : ObjectId("6630b97224a47da04b522ca2"), "title" : "Post 1" }
+{ "_id" : ObjectId("6630b97c24a47da04b522ca3"), "title" : "Post 2" }
+{ "_id" : ObjectId("6630b97c24a47da04b522ca4"), "title" : "Post 3" }
+{ "_id" : ObjectId("6630b97c24a47da04b522ca5"), "title" : "Post 4" }
+> db.product.insert({"_id":1,"name":"Computer","price":45000}) // creat a table with custom id
+WriteResult({ "nInserted" : 1 })
+> db.product.find()
+{ "_id" : 1, "name" : "Computer", "price" : 45000 }
+> list collections /// show all collection
+> show collections
+posts
+product
+> db.posts.findOne() // Show the only one record
+{ "_id" : ObjectId("6630b97224a47da04b522ca2"), "title" : "Post 1" }
+> db.post1.drop()  // drop table
+true
+db.help()  // show the help
+DB methods:
+> db.commandHelp('logout')       
+help for: logout de-authenticate
+> db.getName() // get database name
+test
+> use tmp
+switched to db tmp // drop data base
+> db.dropDatabase()
+{ "ok" : 1 }
+> show roles // disply role
+{
+        "role" : "dbAdmin",
+        "db" : "tmp",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "dbOwner",
+        "db" : "tmp",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "enableSharding",
+        "db" : "tmp",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "read",
+        "db" : "tmp",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "readWrite",
+        "db" : "tmp",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+{
+        "role" : "userAdmin",
+        "db" : "tmp",
+        "isBuiltin" : true,
+        "roles" : [ ],
+        "inheritedRoles" : [ ]
+}
+> db.stats() // current database statics
+{
+        "db" : "blog",
+        "collections" : 2,
+        "views" : 0,
+        "objects" : 5,
+        "avgObjSize" : 39.8,
+        "dataSize" : 199,
+        "storageSize" : 49152,
+        "numExtents" : 0,
+        "indexes" : 2,
+        "indexSize" : 49152,
+        "fsUsedSize" : 110348091392,
+        "fsTotalSize" : 114736230400,
+        "ok" : 1
+}
+> db.posts.insertMany([{title:"post 5",Body:"post5 body",category:"Event",like:2,tags:["news","Event"],date:Date()},{title:"post 6",Body:"post6 body",category:"Techonolgy",like:3,tags:["news","Event"],date:Date()},{title:"post 7",Body:"post7 body",category:"Event",like:2,tags:["news","Event"],date:Date()}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6630c18824a47da04b522ca7"),
+                ObjectId("6630c18824a47da04b522ca8"),
+                ObjectId("6630c18824a47da04b522ca9")
+        ]
+}
+> db.posts.find().pretty() // diaply data to easy to read format
+{ "_id" : ObjectId("6630b70df088a8f3f2197c51"), "title" : "Post 1" }
+{ "_id" : ObjectId("6630b892f088a8f3f2197c52"), "title" : "Post 2" }
+{ "_id" : ObjectId("6630b892f088a8f3f2197c53"), "title" : "Post 3" }
+{ "_id" : ObjectId("6630b892f088a8f3f2197c54"), "title" : "Post 4" }
+{
+        "_id" : ObjectId("6630c18824a47da04b522ca7"),
+        "title" : "post 5",
+        "Body" : "post5 body",
+        "category" : "Event",
+        "like" : 2,
+        "tags" : [
+                "news",
+                "Event"
+        ],
+        "date" : "Tue Apr 30 2024 15:31:44 GMT+0530 (India Standard Time)"
+}
+{
+        "_id" : ObjectId("6630c18824a47da04b522ca8"),
+        "title" : "post 6",
+        "Body" : "post6 body",
+        "category" : "Techonolgy",
+        "like" : 3,
+        "tags" : [
+                "news",
+                "Event"
+        ],
+        "date" : "Tue Apr 30 2024 15:31:44 GMT+0530 (India Standard Time)"
+}
+{
+        "_id" : ObjectId("6630c18824a47da04b522ca9"),
+        "title" : "post 7",
+        "Body" : "post7 body",
+        "category" : "Event",
+        "like" : 2,
+        "tags" : [
+                "news",
+                "Event"
+        ],
+        "date" : "Tue Apr 30 2024 15:31:44 GMT+0530 (India Standard Time)"
+}
+> db.posts.renameCollection('Post')// Rename collection
+{ "ok" : 1 }
+> show collections
+Post
+post1
+> db.Post.find().limit(2) // show limited record
+{ "_id" : ObjectId("6630b70df088a8f3f2197c51"), "title" : "Post 1" }
+{ "_id" : ObjectId("6630b892f088a8f3f2197c52"), "title" : "Post 2" }
+> db.Post.find().count() // Show Total record 
+7

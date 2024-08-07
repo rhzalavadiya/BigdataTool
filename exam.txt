@@ -1,0 +1,70 @@
+db.book.insertMany([
+{bookid:'b001',booktitle:'DS',author:['ritchi','denish'],year:2002,publisher:'Bharta',order:[{oid:'o01',odt:ISODate(),cnm:'Drashti',price:300,qty:10,discount:20}]},
+{bookid:'b002',booktitle:'php',author:['ritchi','phpty','Abc'],year:2001,publisher:'Bharta',order:[{oid:'o02',odt:ISODate(),cnm:'Krina',price:200,qty:20,discount:10}]},
+{bookid:'b003',booktitle:'python',author:['xyz'],year:2005,publisher:'Joy',order:[{oid:'o03',odt:ISODate(),cnm:'Rutva',price:400,qty:30,discount:5}]}
+])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("664467b9a63b51ef60db96ab"),
+                ObjectId("664467b9a63b51ef60db96ac"),
+                ObjectId("664467b9a63b51ef60db96ad")
+        ]
+}
+*******************************************************
+> db.book.updateOne({bookid:'b001'},{$set:{booktitle:'clan'}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+**************************************************
+> db.book.find({$where:"this.author.length<3"}).sort({ booktitle: 1 }).pretty()
+{
+        "_id" : ObjectId("664467b9a63b51ef60db96ab"),
+        "bookid" : "b001",
+        "booktitle" : "clan",
+        "author" : [
+                "ritchi",
+                "denish"
+        ],
+        "year" : 2002,
+        "publisher" : "Bharta",
+        "order" : [
+                {
+                        "oid" : "o01",
+                        "odt" : ISODate("2024-05-15T07:43:53.115Z"),
+                        "cnm" : "Drashti",
+                        "price" : 300,
+                        "qty" : 10,
+                        "discount" : 20
+                }
+        ]
+}
+{
+        "_id" : ObjectId("664467b9a63b51ef60db96ad"),
+        "bookid" : "b003",
+        "booktitle" : "python",
+        "author" : [
+                "xyz"
+        ],
+        "year" : 2005,
+        "publisher" : "Joy",
+        "order" : [
+                {
+                        "oid" : "o03",
+                        "odt" : ISODate("2024-05-15T07:43:53.115Z"),
+                        "cnm" : "Rutva",
+                        "price" : 400,
+                        "qty" : 30,
+                        "discount" : 5
+                }
+        ]
+}
+**************************************
+> db.book.aggregate([
+... ...   {
+... ...     $group: {
+... ...       _id: "$publisher",
+... ...       count: { $sum: 1 }
+... ...     }
+... ...   }
+... ... ])
+{ "_id" : "Joy", "count" : 1 }
+{ "_id" : "Bharta", "count" : 2 }

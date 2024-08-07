@@ -1,0 +1,275 @@
+Create a Movie_Maker database with a collection called “Movie“ containing
+documents with some or all of the following fields: titles, directors, years, actors,synopsis.
+> use Movie_maker
+switched to db Movie_maker
+> db.createCollection('Movie')
+{ "ok" : 1 }
+ISERT RECORD : -
+>    db.Movie.insertMany([{"titles":"Pulp Fiction","directors":"ABC","year":1999,"actors":"Samuel L. Jackson","synopsis":"along with Bilbo Baggins and Gandalf the Grey"},
+... {"titles":"Pee Wee Herman's Big Adventure","directors":"AS","year":2000,"actors":"Amitabh Bachchan","synopsis":"The Hobbit: The Desolation of Smaug"},
+... {"titles":"Javan","directors":"SM","year":2011,"actors":"Samuel L. Jackson","synopsis":"continue their quest to reclaim Erebor"},
+... {"titles":"Ek Rukahuva Faisla","directors":"KT","year":2010,"actors":"Samuel L. Jackson","synopsis":"their homeland gold dragon"},
+... {"titles":"Article 370","directors":"HY","year":2003,"actors":"Karan Johar","synopsis":"fromSmaug"},
+... {"titles":"Lucy","directors":"RZ","year":2002,"actors":"SahrikKhan","synopsis":"Bilbo Baggins is in possession of a mysterious and magical ring"},
+... {"titles":"Dunki","directors":"RL","year":2023,"actors":"Kajol","synopsis":"along with Bilbo Baggins and Gandalf the Grey"},
+... {"titles":"Hero","directors":"SK","year":2015,"actors":"Samuel L. Jackson","synopsis":"their homeland gold dragon"}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6633655f7e07d95e12f3ef43"),
+                ObjectId("6633655f7e07d95e12f3ef44"),
+                ObjectId("6633655f7e07d95e12f3ef45"),
+                ObjectId("6633655f7e07d95e12f3ef46"),
+                ObjectId("6633655f7e07d95e12f3ef47"),
+                ObjectId("6633655f7e07d95e12f3ef48"),
+                ObjectId("6633655f7e07d95e12f3ef49"),
+                ObjectId("6633655f7e07d95e12f3ef4a")
+        ]
+}
+> db.Movie.insertMany([{"titles":"Pulp Fiction","directors":"Quentin Tarantino","year":2002,"actors":"Samuel L. Jackson","synopsis":"along with Bilbo Baggins and Gandalf the Grey"},
+...  {"titles":"Pee Wee Herman's Big Adventure","directors":"AS","year":2003,"actors":"Brad Pitt","synopsis":"The Hobbit: The Desolation of Smaug"}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("66336a337e07d95e12f3ef4b"),
+                ObjectId("66336a337e07d95e12f3ef4c")
+        ]
+}
+>  
+*************************************************
+Perform the following operations on the database:
+a) Retrieve all documents.
+> db.Movie.find().pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef43"),
+        "titles" : "Pulp Fiction",
+        "directors" : "ABC",
+        "year" : 1999,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef44"),
+        "titles" : "Pee Wee Herman's Big Adventure",
+        "directors" : "AS",
+        "year" : 2000,
+        "actors" : "Amitabh Bachchan",
+        "synopsis" : "The Hobbit: The Desolation of Smaug"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef45"),
+        "titles" : "Javan",
+        "directors" : "SM",
+        "year" : 2011,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "continue their quest to reclaim Erebor"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef46"),
+        "titles" : "Ek Rukahuva Faisla",
+        "directors" : "KT",
+        "year" : 2010,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "their homeland gold dragon"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef47"),
+        "titles" : "Article 370",
+        "directors" : "HY",
+        "year" : 2003,
+        "actors" : "Karan Johar",
+        "synopsis" : "fromSmaug"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef48"),
+        "titles" : "Lucy",
+        "directors" : "RZ",
+        "year" : 2002,
+        "actors" : "SahrikKhan",
+        "synopsis" : "Bilbo Baggins is in possession of a mysterious and magical ring"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef49"),
+        "titles" : "Dunki",
+        "directors" : "RL",
+        "year" : 2023,
+        "actors" : "Kajol",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef4a"),
+        "titles" : "Hero",
+        "directors" : "SK",
+        "year" : 2015,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "their homeland gold dragon"
+}
+>            
+*******************************************
+b) Retrieve all documents with Director set to "Quentin Tarantino".
+ db.Movie.find({"directors":"Quentin Tarantino"}).pretty()
+{
+        "_id" : ObjectId("66336a337e07d95e12f3ef4b"),
+        "titles" : "Pulp Fiction",
+        "directors" : "Quentin Tarantino",
+        "year" : 2002,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+******************************************************
+c) Retrieve all documents where actors include "Brad Pitt".
+> db.Movie.find({"actors":"Brad Pitt"}).pretty()
+{
+        "_id" : ObjectId("66336a337e07d95e12f3ef4c"),
+        "titles" : "Pee Wee Herman's Big Adventure",
+        "directors" : "AS",
+        "year" : 2003,
+        "actors" : "Brad Pitt",
+        "synopsis" : "The Hobbit: The Desolation of Smaug"
+}
+**************************************************
+d) Retrieve all movies released before the year 2000 or after 2010.
+> db.Movie.find({$or: [{"year": {$lt: 2000}}, {"year": {$gt: 2010}}]}).pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef43"),
+        "titles" : "Pulp Fiction",
+        "directors" : "ABC",
+        "year" : 1999,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef45"),
+        "titles" : "Javan",
+        "directors" : "SM",
+        "year" : 2011,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "continue their quest to reclaim Erebor"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef49"),
+        "titles" : "Dunki",
+        "directors" : "RL",
+        "year" : 2023,
+        "actors" : "Kajol",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef4a"),
+        "titles" : "Hero",
+        "directors" : "SK",
+        "year" : 2015,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "their homeland gold dragon"
+}
+*****************************************************
+e) Add a synopsis to "The Hobbit: An Unexpected Journey”: "A reluctant hobbit,
+Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves
+to reclaim their mountain home - and the gold within it - from the dragon
+Smaug."
+***************************************************
+f) Add a synopsis to "The Hobbit: The Desolation of Smaug”: "The dwarves, along with Bilbo
+Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from
+Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."
+******************************************************
+g) Add an actor named "Samuel L. Jackson" to the movie "Pulp Fiction"
+*****************************************************
+h) Find all movies that have a synopsis that contains the word "Bilbo".
+> db.Movie.find({"synopsis": /Bilbo/}).pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef43"),
+        "titles" : "Pulp Fiction",
+        "directors" : "ABC",
+        "year" : 1999,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef48"),
+        "titles" : "Lucy",
+        "directors" : "RZ",
+        "year" : 2002,
+        "actors" : "SahrikKhan",
+        "synopsis" : "Bilbo Baggins is in possession of a mysterious and magical ring"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef49"),
+        "titles" : "Dunki",
+        "directors" : "RL",
+        "year" : 2023,
+        "actors" : "Kajol",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+******************************************************
+i) Find all movies that have a synopsis that contains the word "Gandalf".
+> db.Movie.find({"synopsis": /Gandalf/}).pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef43"),
+        "titles" : "Pulp Fiction",
+        "directors" : "ABC",
+        "year" : 1999,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef49"),
+        "titles" : "Dunki",
+        "directors" : "RL",
+        "year" : 2023,
+        "actors" : "Kajol",
+        "synopsis" : "along with Bilbo Baggins and Gandalf the Grey"
+}
+***************************************
+j) Find all movies that have a synopsis that contains the word "Bilbo" and not the word
+"Gandalf".
+> db.Movie.find({$and: [{"synopsis": /Bilbo/}, {"synopsis":{$not: /Gandalf/}}]}).pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef48"),
+        "titles" : "Lucy",
+        "directors" : "RZ",
+        "year" : 2002,
+        "actors" : "SahrikKhan",
+        "synopsis" : "Bilbo Baggins is in possession of a mysterious and magical ring"
+}
+************************************************
+k) Find all movies that have a synopsis that contains the word "dwarves" or
+"hobbit"
+> db.Movie.find({$or: [{"synopsis": /dwarves/},{"synopsis":/hobbit/}]}).pretty()
+> db.Movie.find({$or: [{"synopsis": /dwarves/}, {"synopsis":/Hobbit/}]}).pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef44"),
+        "titles" : "Pee Wee Herman's Big Adventure",
+        "directors" : "AS",
+        "year" : 2000,
+        "actors" : "Amitabh Bachchan",
+        "synopsis" : "The Hobbit: The Desolation of Smaug"
+}
+{
+        "_id" : ObjectId("66336a337e07d95e12f3ef4c"),
+        "titles" : "Pee Wee Herman's Big Adventure",
+        "directors" : "AS",
+        "year" : 2003,
+        "actors" : "Brad Pitt",
+        "synopsis" : "The Hobbit: The Desolation of Smaug"
+}
+****************************************************
+l) Find all movies that have a synopsis that contains the word "gold" and "dragon".
+> db.Movie.find({$and: [{"synopsis": /gold/}, {"synopsis":/dragon/}]}).pretty()
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef46"),
+        "titles" : "Ek Rukahuva Faisla",
+        "directors" : "KT",
+        "year" : 2010,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "their homeland gold dragon"
+}
+{
+        "_id" : ObjectId("6633655f7e07d95e12f3ef4a"),
+        "titles" : "Hero",
+        "directors" : "SK",
+        "year" : 2015,
+        "actors" : "Samuel L. Jackson",
+        "synopsis" : "their homeland gold dragon"
+}
+*************************************************
+m) Delete the movie "Pee Wee Herman's Big Adventure”

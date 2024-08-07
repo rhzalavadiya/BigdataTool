@@ -1,0 +1,416 @@
+> db.Post.copyTo("Member") // To copy the data base
+
+>db.createCollection("Student")
+>db.Student.insertMany([{"_id":1,"Name":"Rahul","Age": 12,"Gender":"M","Grade":"VII","Hobbies":"Internet Suffering"},
+{"_id":2,"Name":"Raj","Age": 11,"Gender":"M","Grade":"VII","Hobbies":"Cricket"},
+{"_id":3,"Name":"Ami","Age": 12,"Gender":"F","Grade":"VII","Hobbies":"Dancing"},
+{"_id":4,"Name":"Rohan","Age": 13,"Gender":"M","Grade":"VII","Hobbies":"Raeading"},
+{"_id":5,"Name":"Ram","Age": 14,"Gender":"M","Grade":"VII","Hobbies":"Internet Suffering"},
+{"_id":6,"Name":"Sati","Age": 12,"Gender":"F","Grade":"VII","Hobbies":"Internet Suffering"},
+{"_id":7,"Name":"Sona","Age": 12,"Gender":"F","Grade":"VII","Hobbies":"Dancing"},
+])
+
+> db.Student.count({Age:{$gt:11}})
+6
+> db.Student.count({Age:{$lt:11}})
+0
+> db.Student.count({Age:{$eq:11}})
+1
+> db.Student.countDocuments({})
+7
+> db.Student.find({"Name":"Rahul"});
+{ "_id" : 1, "Name" : "Rahul", "Age" : 12, "Gender" : "M", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+> db.Student.find({"Gender":"F"});
+{ "_id" : 3, "Name" : "Ami", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Dancing" }
+{ "_id" : 6, "Name" : "Sati", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+{ "_id" : 7, "Name" : "Sona", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Dancing" }
+> db.Student.find({"Age":12});
+{ "_id" : 1, "Name" : "Rahul", "Age" : 12, "Gender" : "M", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+{ "_id" : 3, "Name" : "Ami", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Dancing" }
+{ "_id" : 6, "Name" : "Sati", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+{ "_id" : 7, "Name" : "Sona", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Dancing" }
+
+> db.Student.find({},{"Name":1,"Gender":1,"_id":0});
+{ "Name" : "Rahul", "Gender" : "M" }
+{ "Name" : "Raj", "Gender" : "M" }
+{ "Name" : "Ami", "Gender" : "F" }
+{ "Name" : "Rohan", "Gender" : "M" }
+{ "Name" : "Ram", "Gender" : "M" }
+{ "Name" : "Sati", "Gender" : "F" }
+{ "Name" : "Sona", "Gender" : "F" }
+> db.Student.find({},{"Name":1,"Gender":1});
+{ "_id" : 1, "Name" : "Rahul", "Gender" : "M" }
+{ "_id" : 2, "Name" : "Raj", "Gender" : "M" }
+{ "_id" : 3, "Name" : "Ami", "Gender" : "F" }
+{ "_id" : 4, "Name" : "Rohan", "Gender" : "M" }
+{ "_id" : 5, "Name" : "Ram", "Gender" : "M" }
+{ "_id" : 6, "Name" : "Sati", "Gender" : "F" }
+{ "_id" : 7, "Name" : "Sona", "Gender" : "F" }
+
+> db.Student.find({},{"_id":0});
+{ "Name" : "Rahul", "Age" : 12, "Gender" : "M", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+{ "Name" : "Raj", "Age" : 11, "Gender" : "M", "Grade" : "VII", "Hobbies" : "Cricket" }
+{ "Name" : "Ami", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Dancing" }
+{ "Name" : "Rohan", "Age" : 13, "Gender" : "M", "Grade" : "VII", "Hobbies" : "Raeading" }
+{ "Name" : "Ram", "Age" : 14, "Gender" : "M", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+{ "Name" : "Sati", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Internet Suffering" }
+{ "Name" : "Sona", "Age" : 12, "Gender" : "F", "Grade" : "VII", "Hobbies" : "Dancing" }
+
+> db.Student.count({Age:{$ne:11}})
+6
+> db.Student.count({Age:{$lte:11}})
+1
+> db.Student.count({Age:{$gte:11}})
+7
+
+> db.Student.find({"Grade":{$eq:"VII"}}).pretty()
+{
+        "_id" : 1,
+        "Name" : "Rahul",
+        "Age" : 12,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 3,
+        "Name" : "Ami",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+{
+        "_id" : 5,
+        "Name" : "Ram",
+        "Age" : 14,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 6,
+        "Name" : "Sati",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 7,
+        "Name" : "Sona",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+> db.Student.find({"Grade":"VII"}).pretty()
+{
+        "_id" : 1,
+        "Name" : "Rahul",
+        "Age" : 12,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 3,
+        "Name" : "Ami",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+{
+        "_id" : 5,
+        "Name" : "Ram",
+        "Age" : 14,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 6,
+        "Name" : "Sati",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 7,
+        "Name" : "Sona",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+ db.Student.find({"Hobbies":{$in :["Dancing","Cricket"]}}).pretty();
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 3,
+        "Name" : "Ami",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+{
+        "_id" : 7,
+        "Name" : "Sona",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+
+> db.Student.count({Age:{$ne:11}})
+6
+
+> db.Student.find({"Age":{$ne :11}}).pretty();
+{
+        "_id" : 1,
+        "Name" : "Rahul",
+        "Age" : 12,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 3,
+        "Name" : "Ami",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+{
+        "_id" : 5,
+        "Name" : "Ram",
+        "Age" : 14,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 6,
+        "Name" : "Sati",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 7,
+        "Name" : "Sona",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+
+> db.Student.find({$and:[{"Gender":"F"},{"Age":12}]}).pretty()
+{
+        "_id" : 3,
+        "Name" : "Ami",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+{
+        "_id" : 6,
+        "Name" : "Sati",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 7,
+        "Name" : "Sona",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+
+> db.Student.find({$or:[{"Age":13},{"Age":11}]}).pretty()
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+
+> db.Student.find({"Age":{$in :[11,13]}}).pretty();
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+
+
+> db.Student.find({"Name":/^R/}).pretty()
+{
+        "_id" : 1,
+        "Name" : "Rahul",
+        "Age" : 12,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+{
+        "_id" : 5,
+        "Name" : "Ram",
+        "Age" : 14,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+
+> db.Student.find({"Name":/a/}).pretty()
+{
+        "_id" : 1,
+        "Name" : "Rahul",
+        "Age" : 12,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 2,
+        "Name" : "Raj",
+        "Age" : 11,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Cricket"
+}
+{
+        "_id" : 4,
+        "Name" : "Rohan",
+        "Age" : 13,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Raeading"
+}
+{
+        "_id" : 5,
+        "Name" : "Ram",
+        "Age" : 14,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 6,
+        "Name" : "Sati",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+{
+        "_id" : 7,
+        "Name" : "Sona",
+        "Age" : 12,
+        "Gender" : "F",
+        "Grade" : "VII",
+        "Hobbies" : "Dancing"
+}
+
+> db.Student.find({"Name":/l$/}).pretty()
+{
+        "_id" : 1,
+        "Name" : "Rahul",
+        "Age" : 12,
+        "Gender" : "M",
+        "Grade" : "VII",
+        "Hobbies" : "Internet Suffering"
+}
+
+

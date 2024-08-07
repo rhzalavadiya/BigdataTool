@@ -1,0 +1,387 @@
+The following collection of five documents is given. Documents consist of orders. An
+order has an id (e.g. “o1”), the year in which it was issues, the cost, the items in the
+order, and the number of days it took to deliver the order. The cost is specified as price
+in a given currency. The order items consist of products. A product has an id (e.g.,
+“p1”), colors, and quantity.
+{"order":"o1","year":2020,"paid":"Y","cost":{"price":30,"currency":"NOK"},
+"items":[{"product":"p1","colours":["blue","black"],"quantity":15}],"delivery_days":5}
+{"order":"o2","year":2020,"paid":"Y","cost":{"price":13,"currency":"EUR"},
+"items":[{"product":"p2","colours":["white"],"quantity":4},
+{"product":"p3","colours":["white","black"],"quantity":1}],"delivery_days":4},
+{"order":"o3","year":2018,"paid":"N","cost":{"price":33,"currency":"EUR"},
+"items":[{"product":"p3","colours":["blue","black"],"quantity":4}], "delivery_days":4},
+{"order":"o4","year":2017,"paid":"Y","cost":{"price":17,"currency":"NOK"},
+"items":[{"product":"p2","colours":["pink","black"],"quantity":14},
+{"product":"p4","colours":["white"],"quantity":1}], "delivery_days":2},
+{"order":"o5","year":2020,"paid":"Y","cost":{"price":19,"currency":"NOK"},
+"items":[{"product":"p1","quantity":15}], "delivery_days":3}
+
+> use product
+switched to db product
+> db.createCollection("order")
+{ "ok" : 1 }
+
+db.order.insertMany([
+{"order": "o1","year": 2020,"paid": "Y","cost": {"price": 30,"currency": "NOK"},"items": [{"product": "p1","colours": ["blue", "black"],"quantity": 15}],"delivery_days": 5},
+{"order": "o2","year": 2020,"paid": "Y","cost": {"price": 13,"currency": "EUR"},"items": [{"product": "p2","colours": ["white"],"quantity": 4},{"product": "p3","colours": ["white", "black"],"quantity": 1}],"delivery_days": 4},
+{"order": "o3","year": 2018,"paid": "N","cost": {"price": 33,"currency": "EUR"},"items": [{"product": "p3","colours": ["blue", "black"],"quantity": 4}],"delivery_days": 4},
+{"order": "o4","year": 2017,"paid": "Y","cost": {"price": 17,"currency": "NOK"},"items": [{"product": "p2","colours": ["pink", "black"],"quantity": 14},{"product": "p4","colours": ["white"],"quantity": 1}],"delivery_days": 2},
+{"order": "o5","year": 2020,"paid": "Y","cost": {"price": 19,"currency": "NOK"},"items": [{"product": "p1","quantity": 15}],"delivery_days": 3}])
+
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6635e7bede24baa774b7a535"),
+                ObjectId("6635e7bede24baa774b7a536"),
+                ObjectId("6635e7bede24baa774b7a537"),
+                ObjectId("6635e7bede24baa774b7a538"),
+                ObjectId("6635e7bede24baa774b7a539")
+        ]
+}
+**********************************************************************
+1. Retrieve all documents in a collection
+> db.order.find().pretty()
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a535"),
+        "order" : "o1",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 30,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p1",
+                        "colours" : [
+                                "blue",
+                                "black"
+                        ],
+                        "quantity" : 15
+                }
+        ],
+        "delivery_days" : 5
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a536"),
+        "order" : "o2",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 13,
+                "currency" : "EUR"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 4
+                },
+                {
+                        "product" : "p3",
+                        "colours" : [
+                                "white",
+                                "black"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 4
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a537"),
+        "order" : "o3",
+        "year" : 2018,
+        "paid" : "N",
+        "cost" : {
+                "price" : 33,
+                "currency" : "EUR"
+        },
+        "items" : [
+                {
+                        "product" : "p3",
+                        "colours" : [
+                                "blue",
+                                "black"
+                        ],
+                        "quantity" : 4
+                }
+        ],
+        "delivery_days" : 4
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a538"),
+        "order" : "o4",
+        "year" : 2017,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 17,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "pink",
+                                "black"
+                        ],
+                        "quantity" : 14
+                },
+                {
+                        "product" : "p4",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 2
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a539"),
+        "order" : "o5",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 19,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p1",
+                        "quantity" : 15
+                }
+        ],
+        "delivery_days" : 3
+}
+************************************************************
+2. Retrieve all documents that contain paid orders (the "paid" field is "Y")
+> db.order.find({ "paid": "Y" }).pretty()
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a535"),
+        "order" : "o1",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 30,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p1",
+                        "colours" : [
+                                "blue",
+                                "black"
+                        ],
+                        "quantity" : 15
+                }
+        ],
+        "delivery_days" : 5
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a536"),
+        "order" : "o2",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 13,
+                "currency" : "EUR"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 4
+                },
+                {
+                        "product" : "p3",
+                        "colours" : [
+                                "white",
+                                "black"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 4
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a538"),
+        "order" : "o4",
+        "year" : 2017,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 17,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "pink",
+                                "black"
+                        ],
+                        "quantity" : 14
+                },
+                {
+                        "product" : "p4",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 2
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a539"),
+        "order" : "o5",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 19,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p1",
+                        "quantity" : 15
+                }
+        ],
+        "delivery_days" : 3
+}
+************************************************************************
+3. Retrieve all documents that contain paid orders and the orders are from before
+2019
+> db.order.find({ "paid": "Y", "year": { $lt: 2019 } }).pretty()
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a538"),
+        "order" : "o4",
+        "year" : 2017,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 17,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "pink",
+                                "black"
+                        ],
+                        "quantity" : 14
+                },
+                {
+                        "product" : "p4",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 2
+}
+**********************************************************************
+4. Retrieve all documents that contain unpaid orders or whose orders are from
+before 2019
+> db.order.find({ $or: [{ "paid": "N" }, { "year": { $lt: 2019 } }] });
+{ "_id" : ObjectId("6635e7bede24baa774b7a537"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a538"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+************************************************************************
+5. Retrieve all documents that contain orders whose price is in NOK
+>  db.order.find({ "cost.currency": "NOK" });
+{ "_id" : ObjectId("6635e7bede24baa774b7a535"), "order" : "o1", "year" : 2020, "paid" : "Y", "cost" : { "price" : 30, "currency" : "NOK" }, "items" : [ { "product" : "p1", "colours" : [ "blue", "black" ], "quantity" : 15 } ], "delivery_days" : 5 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a538"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a539"), "order" : "o5", "year" : 2020, "paid" : "Y", "cost" : { "price" : 19, "currency" : "NOK" }, "items" : [ { "product" : "p1", "quantity" : 15 } ], "delivery_days" : 3 }
+**************************************************************************
+6. Retrieve all documents that contain orders whose price is less than 18 NOK
+> db.order.find({ "cost.price": { $lt: 18 }, "cost.currency": "NOK" });
+{ "_id" : ObjectId("6635e7bede24baa774b7a538"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+*************************************************************************
+7. Retrieve all documents with orders that contain product "p2"
+> db.order.find({ "items.product": "p2" }).pretty()
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a536"),
+        "order" : "o2",
+        "year" : 2020,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 13,
+                "currency" : "EUR"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 4
+                },
+                {
+                        "product" : "p3",
+                        "colours" : [
+                                "white",
+                                "black"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 4
+}
+{
+        "_id" : ObjectId("6635e7bede24baa774b7a538"),
+        "order" : "o4",
+        "year" : 2017,
+        "paid" : "Y",
+        "cost" : {
+                "price" : 17,
+                "currency" : "NOK"
+        },
+        "items" : [
+                {
+                        "product" : "p2",
+                        "colours" : [
+                                "pink",
+                                "black"
+                        ],
+                        "quantity" : 14
+                },
+                {
+                        "product" : "p4",
+                        "colours" : [
+                                "white"
+                        ],
+                        "quantity" : 1
+                }
+        ],
+        "delivery_days" : 2
+}
+*******************************************************************************
+8. Retrieve all documents with orders that contain products whose quantity is less
+than 13.
+> db.order.find({ "items.quantity": { $lt: 13 } });
+{ "_id" : ObjectId("6635e7bede24baa774b7a536"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white" ], "quantity" : 4 }, { "product" : "p3", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a537"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a538"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+**************************************************************************
+9. Retrieve all documents with orders that contain products whose quantity is less
+than 13 and contain no products whose quantity exceeds 13
+> db.order.find({ "items.quantity": { $lt: 13, $not: { $elemMatch: { "quantity": { $gte: 13 } } } } });
+{ "_id" : ObjectId("6635e7bede24baa774b7a536"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white" ], "quantity" : 4 }, { "product" : "p3", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a537"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a538"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+**********************************************************************
+10. Retrieve all documents with orders that contain products whose first colour (i.e.,
+first element in the "colours" array) is blue
+> db.order.find({ "items.colours.0": "blue" });
+{ "_id" : ObjectId("6635e7bede24baa774b7a535"), "order" : "o1", "year" : 2020, "paid" : "Y", "cost" : { "price" : 30, "currency" : "NOK" }, "items" : [ { "product" : "p1", "colours" : [ "blue", "black" ], "quantity" : 15 } ], "delivery_days" : 5 }
+{ "_id" : ObjectId("6635e7bede24baa774b7a537"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+*********************************************************************
+11. Retrieve the total number of delivery days, g
+> db.order.aggregate([{$group: {_id: null,totalDeliveryDays: { $sum: "$delivery_days" }}}]);
+{ "_id" : null, "totalDeliveryDays" : 18 }
+*********************************************************************

@@ -1,0 +1,251 @@
+Create a new MongoDB database called “EMPLOYEE”.   Within “EMPLOYEE” database, create a collection named EMPLOYEE_MASTER”
+assume an appropriate schema consisting of fields like  Empno, Name, Designation,DOJ, Department, Salary, Gender, Skills(array)
+> use EMPLOYEE
+switched to db EMPLOYEE
+> db.createCollection("EMPLOYEE_MASTER")
+{ "ok" : 1 }
+****************************************************
+1. Insert 7 documents into the above collection.
+db.EMPLOYEE_MASTER.insertMany([
+    { Empno: 1, Name: "John", Designation: "Manager", DOJ: new Date("1998-03-12"), Department: "HR", Salary: 50000, Gender: "Male", Skills: ["Leadership", "Communication"] },
+    { Empno: 2, Name: "Emily", Designation: "Engineer", DOJ: new Date("1988-06-25"), Department: "IT", Salary: 45000, Gender: "Female", Skills: ["Java", "Python"] },
+    { Empno: 3, Name: "Akash", Designation: "Scientist", DOJ: new Date("1967-11-08"), Department: "Research", Salary: 60000, Gender: "Male", Skills: ["Data Analysis", "Research"] },
+    { Empno: 4, Name: "Sophia", Designation: "HR Manager", DOJ: new Date("2017-09-30"), Department: "HR", Salary: 55000, Gender: "Female", Skills: ["Recruitment", "Employee Relations"] },
+    { Empno: 5, Name: "Amit", Designation: "Accountant", DOJ: new Date("2020-02-14"), Department: "Accounts", Salary: 40000, Gender: "Male", Skills: ["Accounting", "Financial Analysis"] },
+    { Empno: 6, Name: "Rachel", Designation: "Engineer", DOJ: new Date("2019-08-10"), Department: "IT", Salary: 48000, Gender: "Female", Skills: ["C++", "JavaScript"] },
+    { Empno: 7, Name: "Akash", Designation: "Engineer", DOJ: new Date("2014-05-20"), Department: "IT", Salary: 50000, Gender: "Male", Skills: ["Java", "SQL"] }
+]);
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("663496313b10be419fbfa3e3"),
+                ObjectId("663496313b10be419fbfa3e4"),
+                ObjectId("663496313b10be419fbfa3e5"),
+                ObjectId("663496313b10be419fbfa3e6"),
+                ObjectId("663496313b10be419fbfa3e7"),
+                ObjectId("663496313b10be419fbfa3e8"),
+                ObjectId("663496313b10be419fbfa3e9")
+        ]
+}
+*******************************************************
+2. Display Name, Department, Gender and Salary.
+> db.EMPLOYEE_MASTER.find({}, { Name: 1, Department: 1, Gender: 1, Salary: 1, _id: 0 }).pretty();
+{
+        "Name" : "John",
+        "Department" : "HR",
+        "Salary" : 50000,
+        "Gender" : "Male"
+}
+{
+        "Name" : "Emily",
+        "Department" : "IT",
+        "Salary" : 45000,
+        "Gender" : "Female"
+}
+{
+        "Name" : "Akash",
+        "Department" : "Research",
+        "Salary" : 60000,
+        "Gender" : "Male"
+}
+{
+        "Name" : "Sophia",
+        "Department" : "HR",
+        "Salary" : 55000,
+        "Gender" : "Female"
+}
+{
+        "Name" : "Amit",
+        "Department" : "Accounts",
+        "Salary" : 40000,
+        "Gender" : "Male"
+}
+{
+        "Name" : "Rachel",
+        "Department" : "IT",
+        "Salary" : 48000,
+        "Gender" : "Female"
+}
+{
+        "Name" : "Akash",
+        "Department" : "IT",
+        "Salary" : 50000,
+        "Gender" : "Male"
+}
+*********************************************************************
+3. Display the list of employees from the department “HR”.
+> db.EMPLOYEE_MASTER.find({ Department: "HR" }).pretty()
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e3"),
+        "Empno" : 1,
+        "Name" : "John",
+        "Designation" : "Manager",
+        "DOJ" : ISODate("1998-03-12T00:00:00Z"),
+        "Department" : "HR",
+        "Salary" : 50000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Leadership",
+                "Communication"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e6"),
+        "Empno" : 4,
+        "Name" : "Sophia",
+        "Designation" : "HR Manager",
+        "DOJ" : ISODate("2017-09-30T00:00:00Z"),
+        "Department" : "HR",
+        "Salary" : 55000,
+        "Gender" : "Female",
+        "Skills" : [
+                "Recruitment",
+                "Employee Relations"
+        ]
+}
+
+*********************************************************************
+4. Display the employee id, name, department and DOB.
+> db.EMPLOYEE_MASTER.find({}, { Empno: 1, Name: 1, Department: 1, DOJ: 1, _id: 0 }).pretty()
+{
+        "Empno" : 1,
+        "Name" : "John",
+        "DOJ" : ISODate("1998-03-12T00:00:00Z"),
+        "Department" : "HR"
+}
+{
+        "Empno" : 2,
+        "Name" : "Emily",
+        "DOJ" : ISODate("1988-06-25T00:00:00Z"),
+        "Department" : "IT"
+}
+{
+        "Empno" : 3,
+        "Name" : "Akash",
+        "DOJ" : ISODate("1967-11-08T00:00:00Z"),
+        "Department" : "Research"
+}
+{
+        "Empno" : 4,
+        "Name" : "Sophia",
+        "DOJ" : ISODate("2017-09-30T00:00:00Z"),
+        "Department" : "HR"
+}
+{
+        "Empno" : 5,
+        "Name" : "Amit",
+        "DOJ" : ISODate("2020-02-14T00:00:00Z"),
+        "Department" : "Accounts"
+}
+{
+        "Empno" : 6,
+        "Name" : "Rachel",
+        "DOJ" : ISODate("2019-08-10T00:00:00Z"),
+        "Department" : "IT"
+}
+{
+        "Empno" : 7,
+        "Name" : "Akash",
+        "DOJ" : ISODate("2014-05-20T00:00:00Z"),
+        "Department" : "IT"
+}
+
+*********************************************************************
+5. Display the employees whose gender is female and designation either “Engineer”or “Scientist”.
+> db.EMPLOYEE_MASTER.find({ Gender: "Female", Designation: { $in: ["Engineer", "Scientist"] } }).pretty();
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e4"),
+        "Empno" : 2,
+        "Name" : "Emily",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("1988-06-25T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 45000,
+        "Gender" : "Female",
+        "Skills" : [
+                "Java",
+                "Python"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e8"),
+        "Empno" : 6,
+        "Name" : "Rachel",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2019-08-10T00:00:00Z"),
+        "Department" : "IT",        
+	"Salary" : 48000,
+        "Gender" : "Female",
+        "Skills" : [
+                "C++",
+                "JavaScript"
+        ]
+} 
+*********************************************************************
+6. Update all those documents where name of employee is “Akash” with the new value of designation as “Engineer”.
+> db.EMPLOYEE_MASTER.updateMany({ Name: "Akash" }, { $set: { Designation: "Engineer" } });
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 1 }
+
+*********************************************************************
+7. Delete all those documents where DOJ is before 1st January 1999.
+> db.EMPLOYEE_MASTER.deleteMany({ DOJ: { $lt: new Date("1999-01-01") } });
+{ "acknowledged" : true, "deletedCount" : 3 }
+
+*********************************************************************
+8. Display the employees whose salary is greater than 25000 and have skills Java or PHP.
+> db.EMPLOYEE_MASTER.find({ Salary: { $gt: 25000 }, Skills: { $in: ["Java", "PHP"] } }).pretty();
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e4"),
+        "Empno" : 2,
+        "Name" : "Emily",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("1988-06-25T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 45000,
+        "Gender" : "Female",
+        "Skills" : [
+                "Java",
+                "Python"
+        ]
+}
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e9"),
+        "Empno" : 7,
+        "Name" : "Akash",
+        "Designation" : "Engineer",
+        "DOJ" : ISODate("2014-05-20T00:00:00Z"),
+        "Department" : "IT",
+        "Salary" : 50000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Java",
+                "SQL"
+        ]
+}
+
+*********************************************************************
+9. Find all the employees having designation “Engineer” and display salary for them.
+
+> db.EMPLOYEE_MASTER.find({ Designation: "Engineer" }, { Name: 1, Salary: 1, _id: 0 }).pretty()
+{ "Name" : "Emily", "Salary" : 45000 }
+{ "Name" : "Rachel", "Salary" : 48000 }
+{ "Name" : "Akash", "Salary" : 50000 }
+*********************************************************************
+10. Display only those documents where the name of employee is “Amit” and designation is “Accountant”.
+
+> db.EMPLOYEE_MASTER.find({ Name: "Amit", Designation: "Accountant" }).pretty()
+{
+        "_id" : ObjectId("663496313b10be419fbfa3e7"),
+        "Empno" : 5,
+        "Name" : "Amit",
+        "Designation" : "Accountant",
+        "DOJ" : ISODate("2020-02-14T00:00:00Z"),
+        "Department" : "Accounts",
+        "Salary" : 40000,
+        "Gender" : "Male",
+        "Skills" : [
+                "Accounting",
+                "Financial Analysis"
+        ]
+}
+*********************************************************************

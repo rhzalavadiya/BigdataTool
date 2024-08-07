@@ -1,0 +1,49 @@
+> db.user.insertMany([{_id:1,Name:"Bob",type:1},{_id:2,Name:"White",type:1},{_id:3,Name:"Smith",type:2}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+****************************************************************************
+> db.user.find({type:2})
+{ "_id" : 3, "Name" : "Smith", "type" : 2 }
+**********************************************************
+> db.user.find().forEach(function(myDoc){print("user:"+myDoc.Name);});
+user:Bob
+user:White
+user:Smith
+**************************************************
+> var myc=db.user.find({type:2});
+> while(myc.hasNext()){print(tojson(myc.next()));}
+{ "_id" : 3, "Name" : "Smith", "type" : 2 }
+**************************************************
+> var myc=db.user.find({type:2});
+> while(myc.hasNext()){printjson(myc.next());}
+{ "_id" : 3, "Name" : "Smith", "type" : 2 }
+************************************************
+> var myc=db.user.find({type:2});
+> myc.forEach(printjson);
+{ "_id" : 3, "Name" : "Smith", "type" : 2 }
+*************************************************
+> db.alphbate.insertMany([{_id:1,alphabet:'a'},{_id:2,alphabet:'b'}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2 ] }
+> var cur=db.alphbate.find()
+> var myrec
+> cur.forEach(function(myrec){print(myrec.alphabet);})
+a
+b
+******************************************************
+> function fact(n){
+... if(n<=1) return 1;
+... return n*fact(n-1);
+... }
+> fact(5);
+120
+******************************************************
+> db.system.js.insert({_id:'fact1',
+...  value:function(n)
+... {
+...  if(n==1)
+... return 1;
+... else
+... return n*fact(n-1);
+... }
+... });
+WriteResult({ "nInserted" : 1 })
+*******************************************************************************
